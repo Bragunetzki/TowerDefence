@@ -4,62 +4,61 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 public class WaveGenerator {
+    private final Queue<WaveConfig> waves;
+    private WaveConfig activeWave;
+    private final LevelController controller;
+    private boolean isActive;
+    private boolean isWaveActive = false;
     private float waveTimer;
     private float enemyTimer;
-    private final Queue<Integer> enemyQueue;
-    private final Queue<Float> enemyDelays;
-    private final Queue<Vector2> enemyPositions;
-    private final Queue<Wave> waveQueue;
-    private Wave nextWave;
-    private final GameController gameController;
+    private final Random random;
+    private int enemiesDepleted;
+    private final Vector2 spawnPosition;
 
-    public WaveGenerator(GameController gameController, Queue<Wave> waves) {
-        enemyQueue = new LinkedList<>();
-        enemyDelays = new LinkedList<>();
-        enemyPositions = new LinkedList<>();
-        waveQueue = new LinkedList<>(waves);
-        nextWave = waveQueue.remove();
-        waveTimer = nextWave.getWaveTime();
-        enemyTimer = nextWave.getEnemyTime();
-        this.gameController = gameController;
+    public WaveGenerator(LevelController controller, LevelConfig levelConfig, Vector2 spawnPosition) {
+        waves = new LinkedList<>(levelConfig.waves);
+        isActive = false;
+        this.controller = controller;
+        random = new Random();
+        this.spawnPosition = spawnPosition;
+    }
+
+    public void startGenerator() {
+        activeWave = waves.remove();
+        waveTimer = activeWave.waveDelay;
+        enemyTimer = activeWave.interval;
+        isWaveActive = false;
+        isActive = true;
+        enemiesDepleted = 0;
     }
 
     public void update(float delta) {
-        if (waveTimer <= 0) {
-            for (int i = 0; i < nextWave.getEnemyIDs().size(); i++)
-                enemyDelays.add(nextWave.getEnemyTime());
-            if (enemyQueue.isEmpty()) {
-                resetEnemyTimer(enemyDelays.remove());
-            }
-            enemyQueue.addAll(nextWave.getEnemyIDs());
-            for (int i = 0; i < nextWave.getEnemyIDs().size(); i++)
-                enemyPositions.add(nextWave.getEnemySpawn());
+        if (!isActive) return;
 
-            if (!waveQueue.isEmpty()) {
-                nextWave = waveQueue.remove();
-            }
-            resetWaveTimer();
+        if (isWaveActive) enemyTimer -= delta;
+        else {
+            waveTimer -= delta;
         }
 
         if (enemyTimer <= 0) {
-            if (!enemyQueue.isEmpty()) {
-                gameController.addEnemy(enemyQueue.remove(), enemyPositions.remove());
-                if (!enemyDelays.isEmpty())
-                    resetEnemyTimer(enemyDelays.remove());
+            int index = random.nextInt(activeWave.enemyTypes.size());
+            int enemyID = activeWave.enemyTypes.get(index);
+            controller.addEnemy(enemyID, spawnPosition);
+            enemiesDepleted++;
+            if (enemiesDepleted >= activeWave.enemyCount) {
+                isWaveActive = false;
+                activeWave = waves.remove();
+                waveTimer = activeWave.waveDelay;
             }
+            enemyTimer = activeWave.interval;
         }
-
-        waveTimer -= delta;
-        enemyTimer -= delta;
-    }
-
-    private void resetWaveTimer() {
-        waveTimer = nextWave.getWaveTime();
-    }
-
-    private void resetEnemyTimer(float value) {
-        enemyTimer = value;
+        else if (waveTimer <= 0) {
+            isWaveActive = true;
+            enemiesDepleted = 0;
+            enemyTimer = activeWave.interval;
+        }
     }
 }
