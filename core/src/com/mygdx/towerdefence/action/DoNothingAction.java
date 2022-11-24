@@ -6,9 +6,11 @@ import java.util.HashMap;
 
 public class DoNothingAction implements Action {
     private final float rate;
+    private final float range;
 
-    public DoNothingAction(float rate, HashMap<String, Float> params) {
+    public DoNothingAction(float rate, float range, HashMap<String, Float> params) {
         this.rate = rate;
+        this.range = range;
     }
 
     @Override
@@ -18,5 +20,10 @@ public class DoNothingAction implements Action {
     @Override
     public float getRate() {
         return rate;
+    }
+
+    @Override
+    public float getRange() {
+        return range;
     }
 }

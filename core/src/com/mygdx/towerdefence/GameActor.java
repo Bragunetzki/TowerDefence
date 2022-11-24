@@ -18,4 +18,5 @@ public interface GameActor {
     GameActor getTarget();
     void setTarget(GameActor target);
     ActorType getType();
+    PathNode getCurrentNode();
 }

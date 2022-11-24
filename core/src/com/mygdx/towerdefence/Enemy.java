@@ -16,9 +16,11 @@ public class Enemy implements GameActor {
     private final float speed;
     private boolean isActive;
     private float actionTimer;
-    private GameActor target;
-    private Vector2 targetLocation;
     private final ActorType actorType;
+
+    private GameActor target;
+    private PathNode targetNode;
+    private PathNode currentNode;
 
     public Enemy(EnemyConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -92,7 +94,7 @@ public class Enemy implements GameActor {
 
     @Override
     public void act(float delta) {
-        move(targetLocation, delta);
+        move(delta);
         actionTimer -= delta;
         if (actionTimer <= 0) {
             action.call(this, delta, target);
@@ -115,23 +117,36 @@ public class Enemy implements GameActor {
         this.target = target;
     }
 
-    private void move(Vector2 node, float delta) {
-        if (node.dst(position) > NODE_SNAP_DISTANCE) {
-            Vector2 direction = node.sub(position);
+    private void move(float delta) {
+        if (targetNode == currentNode && target != null) {
+            Vector2 direction = target.getPosition().cpy().sub(position);
+            if (direction.len2() > action.getRange() * action.getRange())
+                position.add(direction.nor().scl(speed).scl(delta));
+            return;
+        }
+
+        if (targetNode.position.dst(position) > NODE_SNAP_DISTANCE) {
+            Vector2 direction = targetNode.position.cpy().sub(position);
             position.add(direction.nor().scl(speed).scl(delta));
         }
         else {
-            position.set(node);
+            position.set(targetNode.position);
+            currentNode = targetNode;
         }
     }
 
-    public void setTargetLocation(Vector2 location) {
-        this.targetLocation = location;
+    public void setTargetNode(PathNode targetNode) {
+        this.targetNode = targetNode;
     }
 
     @Override
     public ActorType getType() {
         return actorType;
+    }
+
+    @Override
+    public PathNode getCurrentNode() {
+        return currentNode;
     }
 
     public void setPosition(Vector2 position) {

@@ -14,5 +14,6 @@ public class BuildingConfig {
     public List<Integer> upgradeIDs;
     public float actionRate;
     public ActionType actionType;
+    public float actionRange;
     public HashMap<String, Float> actionParams;
 }

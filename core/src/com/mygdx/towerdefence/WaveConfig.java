@@ -5,6 +5,6 @@ import java.util.List;
 public class WaveConfig {
     public int enemyCount;
     public float waveDelay;
-    public float interval;
+    public float enemyInterval;
     public List<Integer> enemyTypes;
 }

@@ -5,13 +5,16 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.List;
 
 public class LevelController {
+    private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
     LevelState levelState;
     private List<GameActor> deadActors;
-    private Creator creator;
+    private final Creator creator;
     private WaveGenerator waveGenerator;
+    private float pathfindingTimer;
 
-    public LevelController() {
-        levelState = new LevelState();
+    public LevelController(Creator creator, int levelID) {
+        this.creator = creator;
+        levelState = new LevelState(creator.getLevelConfig(levelID));
     }
 
     public void update(float delta) {
@@ -35,13 +38,19 @@ public class LevelController {
         if (!actor.isActive()) return;
 
         //pathfinding for enemies
-        actor.setTarget(chooseTarget(actor.getPosition(), actor.getPriority(), levelState.activeEnemies));
-        if (actor instanceof Enemy) {
-            if (actor.getTarget() != null) {
-                Vector2 node = levelState.getClosestNode(actor.getPosition(), actor.getTarget().getPosition());
-                Enemy e = (Enemy) actor;
-                e.setTargetLocation(node);
+        if (pathfindingTimer <= 0) {
+            actor.setTarget(chooseTarget(actor.getPosition(), actor.getPriority(), levelState.activeEnemies));
+            if (actor instanceof Enemy) {
+                if (actor.getTarget() != null) {
+                    PathNode node = levelState.getClosestNode(actor.getCurrentNode(), actor.getTarget().getPosition());
+                    Enemy e = (Enemy) actor;
+                    e.setTargetNode(node);
+                }
             }
+            pathfindingTimer = PATHFINDING_UPDATE_RATE;
+        }
+        else {
+            pathfindingTimer -= delta;
         }
 
         actor.act(delta);
@@ -75,6 +84,7 @@ public class LevelController {
     public void addEnemy(int enemyID, Vector2 spawnPosition) {
         Enemy newEnemy = creator.getNewEnemy(enemyID);
         newEnemy.setPosition(spawnPosition);
+        newEnemy.setTargetNode(levelState.nodeGraph);
         levelState.activeEnemies.add(newEnemy);
     }
 }

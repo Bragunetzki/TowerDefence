@@ -8,9 +8,9 @@ public class BasicAttackAction extends DoNothingAction {
     private final float range;
     private final int damage;
 
-    public BasicAttackAction(float rate, HashMap<String, Float> params) {
-        super(rate, params);
-        range = params.get("range");
+    public BasicAttackAction(float rate, float range, HashMap<String, Float> params) {
+        super(rate, range, params);
+        this.range = range;
         damage = Math.round(params.get("damage"));
     }
 

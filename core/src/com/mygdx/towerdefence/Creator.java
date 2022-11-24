@@ -11,7 +11,19 @@ public class Creator {
         return null;
     }
 
+    public EnemyConfig getEnemyConfig(int ID) {
+        return null;
+    }
+
+    public BuildingConfig getBuildingConfig(int ID) {
+        return null;
+    }
+
     public Action getAction(int ID) {
+        return null;
+    }
+
+    public LevelConfig getLevelConfig(int ID) {
         return null;
     }
 }

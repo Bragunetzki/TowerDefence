@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.towerdefence.action.Action;
 
-import java.util.List;
-
 public class Building implements GameActor, Pool.Poolable {
     private final int id;
     private int health;
@@ -131,5 +129,10 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public ActorType getType() {
         return actorType;
+    }
+
+    @Override
+    public PathNode getCurrentNode() {
+        return null;
     }
 }

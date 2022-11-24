@@ -18,18 +18,18 @@ public class WaveGenerator {
     private int enemiesDepleted;
     private final Vector2 spawnPosition;
 
-    public WaveGenerator(LevelController controller, LevelConfig levelConfig, Vector2 spawnPosition) {
+    public WaveGenerator(LevelController controller, LevelConfig levelConfig) {
         waves = new LinkedList<>(levelConfig.waves);
         isActive = false;
         this.controller = controller;
         random = new Random();
-        this.spawnPosition = spawnPosition;
+        this.spawnPosition = levelConfig.nodeGraph.position;
     }
 
     public void startGenerator() {
         activeWave = waves.remove();
         waveTimer = activeWave.waveDelay;
-        enemyTimer = activeWave.interval;
+        enemyTimer = activeWave.enemyInterval;
         isWaveActive = false;
         isActive = true;
         enemiesDepleted = 0;
@@ -53,12 +53,12 @@ public class WaveGenerator {
                 activeWave = waves.remove();
                 waveTimer = activeWave.waveDelay;
             }
-            enemyTimer = activeWave.interval;
+            enemyTimer = activeWave.enemyInterval;
         }
         else if (waveTimer <= 0) {
             isWaveActive = true;
             enemiesDepleted = 0;
-            enemyTimer = activeWave.interval;
+            enemyTimer = activeWave.enemyInterval;
         }
     }
 }
