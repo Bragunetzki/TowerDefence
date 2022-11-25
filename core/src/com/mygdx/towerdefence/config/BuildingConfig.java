@@ -1,4 +1,7 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.config;
+
+import com.mygdx.towerdefence.action.ActionType;
+import com.mygdx.towerdefence.gameactor.Priority;
 
 import java.util.HashMap;
 import java.util.List;

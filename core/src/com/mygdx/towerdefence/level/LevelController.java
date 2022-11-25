@@ -1,6 +1,11 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.level;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.towerdefence.config.Creator;
+import com.mygdx.towerdefence.gameactor.ActorType;
+import com.mygdx.towerdefence.gameactor.Enemy;
+import com.mygdx.towerdefence.gameactor.GameActor;
+import com.mygdx.towerdefence.gameactor.Priority;
 
 import java.util.List;
 
@@ -48,8 +53,7 @@ public class LevelController {
                 }
             }
             pathfindingTimer = PATHFINDING_UPDATE_RATE;
-        }
-        else {
+        } else {
             pathfindingTimer -= delta;
         }
 

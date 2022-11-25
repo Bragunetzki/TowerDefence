@@ -1,6 +1,7 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.config;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.towerdefence.level.PathNode;
 
 import java.util.List;
 

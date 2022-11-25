@@ -1,7 +1,9 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
+import com.mygdx.towerdefence.config.BuildingConfig;
+import com.mygdx.towerdefence.level.PathNode;
 import com.mygdx.towerdefence.action.Action;
 
 public class Building implements GameActor, Pool.Poolable {

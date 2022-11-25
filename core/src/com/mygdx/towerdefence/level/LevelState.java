@@ -1,7 +1,8 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.level;
 
 import com.badlogic.gdx.math.Vector2;
-import com.sun.tools.jdeps.Graph;
+import com.mygdx.towerdefence.gameactor.GameActor;
+import com.mygdx.towerdefence.config.LevelConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ public class LevelState {
     public List<GameActor> activeBuildings;
     public List<GameActor> activeEnemies;
     public PathNode nodeGraph;
-    Graph<Vector2> nodes;
     public int inLevelCurrency;
 
     public LevelState(LevelConfig config) {

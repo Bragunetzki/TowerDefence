@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.effect;
 
 public interface Effect {
     void apply();

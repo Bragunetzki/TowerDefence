@@ -1,6 +1,8 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.towerdefence.config.EnemyConfig;
+import com.mygdx.towerdefence.level.PathNode;
 import com.mygdx.towerdefence.action.Action;
 
 public class Enemy implements GameActor {

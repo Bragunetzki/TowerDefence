@@ -1,6 +1,8 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.level;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.towerdefence.config.LevelConfig;
+import com.mygdx.towerdefence.config.WaveConfig;
 
 import java.util.LinkedList;
 import java.util.Queue;

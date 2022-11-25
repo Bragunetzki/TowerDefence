@@ -1,6 +1,6 @@
 package com.mygdx.towerdefence.action;
 
-import com.mygdx.towerdefence.GameActor;
+import com.mygdx.towerdefence.gameactor.GameActor;
 
 import java.util.HashMap;
 

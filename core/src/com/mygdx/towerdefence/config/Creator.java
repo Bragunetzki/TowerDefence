@@ -1,6 +1,8 @@
-package com.mygdx.towerdefence;
+package com.mygdx.towerdefence.config;
 
 import com.mygdx.towerdefence.action.Action;
+import com.mygdx.towerdefence.gameactor.Building;
+import com.mygdx.towerdefence.gameactor.Enemy;
 
 public class Creator {
     public Building getNewBuilding(int ID) {
