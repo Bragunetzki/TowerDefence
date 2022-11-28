@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence_editor;
+package com.mygdx.towerdefence_editor.tower;
 
 import lombok.Getter;
 import lombok.Setter;

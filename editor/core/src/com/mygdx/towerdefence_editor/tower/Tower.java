@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence_editor;
+package com.mygdx.towerdefence_editor.tower;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,13 +9,14 @@ import java.util.List;
 @Setter
 public class Tower {
 
-    enum ActionType {
+    public enum ActionType {
+        BASE,
         ECONOMIC,
         ATTACK
         // что-то еще
     }
 
-    enum ActionParameter {
+    public enum ActionParameter {
         RATE,
         RANGE
         // MAX_HEALTH -- улучшается на уровне или в дереве технологий?

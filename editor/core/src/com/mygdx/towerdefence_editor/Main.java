@@ -1,5 +1,8 @@
 package com.mygdx.towerdefence_editor;
 
+import com.mygdx.towerdefence_editor.tower.Tower;
+import com.mygdx.towerdefence_editor.tower.TowerUpgrade;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
