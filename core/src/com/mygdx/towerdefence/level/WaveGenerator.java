@@ -1,5 +1,6 @@
 package com.mygdx.towerdefence.level;
 
+import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.LevelConfig;
 import com.mygdx.towerdefence.config.WaveConfig;
@@ -18,14 +19,14 @@ public class WaveGenerator {
     private float enemyTimer;
     private final Random random;
     private int enemiesDepleted;
-    private final Vector2 spawnPosition;
+    private final PathNode spawnNode;
 
     public WaveGenerator(LevelController controller, LevelConfig levelConfig) {
         waves = new LinkedList<>(levelConfig.waves);
         isActive = false;
         this.controller = controller;
         random = new Random();
-        this.spawnPosition = levelConfig.nodeGraph.position;
+        spawnNode = controller.levelState.nodeGraph;
     }
 
     public void startGenerator() {
@@ -48,7 +49,7 @@ public class WaveGenerator {
         if (enemyTimer <= 0) {
             int index = random.nextInt(activeWave.enemyTypes.size());
             int enemyID = activeWave.enemyTypes.get(index);
-            controller.addEnemy(enemyID, spawnPosition);
+            controller.addEnemy(enemyID, spawnNode);
             enemiesDepleted++;
             if (enemiesDepleted >= activeWave.enemyCount) {
                 isWaveActive = false;

@@ -31,6 +31,8 @@ public class LevelController {
         for (GameActor e : levelState.activeEnemies) {
             updateActor(e, delta);
         }
+        if (pathfindingTimer <= 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
+        else pathfindingTimer -= delta;
 
         for (GameActor actor : deadActors) {
             if (actor.getType() == ActorType.Enemy)
@@ -47,16 +49,14 @@ public class LevelController {
             actor.setTarget(chooseTarget(actor.getPosition(), actor.getPriority(), levelState.activeEnemies));
             if (actor instanceof Enemy) {
                 if (actor.getTarget() != null) {
-                    PathNode node = levelState.getClosestNode(actor.getCurrentNode(), actor.getTarget().getPosition());
+                    PathNode[] path = levelState.getPath(actor.getCurrentNode(), actor.getTarget().getCurrentNode());
                     Enemy e = (Enemy) actor;
-                    e.setTargetNode(node);
+                    e.setTargetNode(path[0]);
                 }
             }
-            pathfindingTimer = PATHFINDING_UPDATE_RATE;
-        } else {
-            pathfindingTimer -= delta;
         }
 
+        //actions
         actor.act(delta);
         if (actor.getHealth() <= 0) {
             actor.kill();
@@ -85,10 +85,11 @@ public class LevelController {
         return target;
     }
 
-    public void addEnemy(int enemyID, Vector2 spawnPosition) {
+    public void addEnemy(int enemyID, PathNode spawnNode) {
         Enemy newEnemy = creator.getNewEnemy(enemyID);
-        newEnemy.setPosition(spawnPosition);
-        newEnemy.setTargetNode(levelState.nodeGraph);
+        newEnemy.setPosition(spawnNode.position);
+        newEnemy.setCurrentNode(spawnNode);
+        newEnemy.setTargetNode(spawnNode);
         levelState.activeEnemies.add(newEnemy);
     }
 }

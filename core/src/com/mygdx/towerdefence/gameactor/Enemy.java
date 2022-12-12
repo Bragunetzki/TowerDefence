@@ -120,18 +120,16 @@ public class Enemy implements GameActor {
     }
 
     private void move(float delta) {
-        if (targetNode == currentNode && target != null) {
-            Vector2 direction = target.getPosition().cpy().sub(position);
-            if (direction.len2() > action.getRange() * action.getRange())
-                position.add(direction.nor().scl(speed).scl(delta));
-            return;
+        if (target != null) {
+            if (target.getPosition().dst(position) <= action.getRange()) //don't move if target is withing range.
+                return;
         }
 
-        if (targetNode.position.dst(position) > NODE_SNAP_DISTANCE) {
+        if (targetNode.position.dst(position) > NODE_SNAP_DISTANCE) { //move towards target node.
             Vector2 direction = targetNode.position.cpy().sub(position);
             position.add(direction.nor().scl(speed).scl(delta));
         }
-        else {
+        else { //snap to target node if close enough.
             position.set(targetNode.position);
             currentNode = targetNode;
         }
@@ -139,6 +137,10 @@ public class Enemy implements GameActor {
 
     public void setTargetNode(PathNode targetNode) {
         this.targetNode = targetNode;
+    }
+
+    public void setCurrentNode(PathNode currentNode) {
+        this.currentNode = currentNode;
     }
 
     @Override
