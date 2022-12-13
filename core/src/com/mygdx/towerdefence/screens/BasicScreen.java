@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.framework.StageMultiplexer;
 
-public class GenericScreen implements Screen {
+public class BasicScreen implements Screen {
     private final Viewport viewport;
     private final OrthographicCamera camera;
     protected final TowerDefenceGame game;
@@ -16,7 +16,7 @@ public class GenericScreen implements Screen {
     public static final float WORLD_SIZE_X = 1920;
     public static final float WORLD_SIZE_Y = 1080;
 
-    public GenericScreen(TowerDefenceGame game) {
+    public BasicScreen(TowerDefenceGame game) {
         this.game = game;
         stageMultiplexer = new StageMultiplexer();
         camera = new OrthographicCamera();

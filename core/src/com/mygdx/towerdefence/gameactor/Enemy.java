@@ -153,6 +153,7 @@ public class Enemy implements GameActor {
         return currentNode;
     }
 
+    @Override
     public void setPosition(Vector2 position) {
         this.position.set(position);
     }

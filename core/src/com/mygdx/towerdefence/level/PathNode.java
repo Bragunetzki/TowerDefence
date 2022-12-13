@@ -7,4 +7,5 @@ import java.util.List;
 public class PathNode {
     public Vector2 position;
     public List<PathNode> connections;
+    public boolean isBuildable;
 }

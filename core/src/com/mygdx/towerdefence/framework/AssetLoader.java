@@ -30,6 +30,14 @@ public class AssetLoader {
         return assets.get(filename, Texture.class);
     }
 
+    public Texture getEnemyTexture(String textureName) {
+        return getTexture("sprites/enemies/" + textureName);
+    }
+
+    public Texture getBuildingTexture(String textureName) {
+        return getTexture("sprites/buildings/" + textureName);
+    }
+
     public void dispose() {
         assets.dispose();
         font.dispose();

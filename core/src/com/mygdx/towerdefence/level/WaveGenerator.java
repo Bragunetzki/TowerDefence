@@ -26,7 +26,7 @@ public class WaveGenerator {
         isActive = false;
         this.controller = controller;
         random = new Random();
-        spawnNode = controller.levelState.nodeGraph;
+        spawnNode = controller.getLevelState().nodeGraph.get(levelConfig.spawnerNodeIndex);
     }
 
     public void startGenerator() {

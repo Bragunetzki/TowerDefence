@@ -1,17 +1,17 @@
 package com.mygdx.towerdefence.level;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.Creator;
-import com.mygdx.towerdefence.gameactor.ActorType;
-import com.mygdx.towerdefence.gameactor.Enemy;
-import com.mygdx.towerdefence.gameactor.GameActor;
-import com.mygdx.towerdefence.gameactor.Priority;
+import com.mygdx.towerdefence.config.LevelConfig;
+import com.mygdx.towerdefence.gameactor.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
-    LevelState levelState;
+    private final LevelState levelState;
     private List<GameActor> deadActors;
     private final Creator creator;
     private WaveGenerator waveGenerator;
@@ -19,25 +19,28 @@ public class LevelController {
 
     public LevelController(Creator creator, int levelID) {
         this.creator = creator;
-        levelState = new LevelState(creator.getLevelConfig(levelID));
+        LevelConfig levelConfig = creator.getLevelConfig(levelID);
+        levelState = new LevelState(levelConfig);
+        addBuilding(0, levelState.nodeGraph.get(levelConfig.baseTileIndex));
+        pathfindingTimer = 0;
     }
 
     public void update(float delta) {
         waveGenerator.update(delta);
 
-        for (GameActor b : levelState.activeBuildings) {
+        for (GameActor b : levelState.activeBuildings.values()) {
             updateActor(b, delta);
         }
-        for (GameActor e : levelState.activeEnemies) {
+        for (GameActor e : levelState.activeEnemies.values()) {
             updateActor(e, delta);
         }
-        if (pathfindingTimer <= 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
+        if (pathfindingTimer <= 0 && PATHFINDING_UPDATE_RATE != 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
         else pathfindingTimer -= delta;
 
         for (GameActor actor : deadActors) {
             if (actor.getType() == ActorType.Enemy)
-                levelState.activeEnemies.remove(actor);
-            else levelState.activeBuildings.remove(actor);
+                levelState.activeEnemies.values().remove(actor);
+            else levelState.activeBuildings.values().remove(actor);
         }
     }
 
@@ -46,7 +49,7 @@ public class LevelController {
 
         //pathfinding for enemies
         if (pathfindingTimer <= 0) {
-            actor.setTarget(chooseTarget(actor.getPosition(), actor.getPriority(), levelState.activeEnemies));
+            actor.setTarget(chooseTarget(actor.getPosition(), actor.getPriority(), levelState.activeEnemies.values()));
             if (actor instanceof Enemy) {
                 if (actor.getTarget() != null) {
                     PathNode[] path = levelState.getPath(actor.getCurrentNode(), actor.getTarget().getCurrentNode());
@@ -64,7 +67,7 @@ public class LevelController {
         }
     }
 
-    private GameActor chooseTarget(Vector2 position, Priority priority, List<GameActor> actors) {
+    private GameActor chooseTarget(Vector2 position, Priority priority, Collection<GameActor> actors) {
         GameActor target = null;
 
         switch (priority) {
@@ -90,6 +93,25 @@ public class LevelController {
         newEnemy.setPosition(spawnNode.position);
         newEnemy.setCurrentNode(spawnNode);
         newEnemy.setTargetNode(spawnNode);
-        levelState.activeEnemies.add(newEnemy);
+        int refID = MathUtils.random(10000);
+        while (levelState.activeEnemies.containsKey(refID)) {
+            refID = MathUtils.random(10000);
+        }
+        levelState.activeEnemies.put(refID, newEnemy);
+    }
+
+    public void addBuilding(int buildingID, PathNode buildNode) {
+        Building newBuilding = creator.getNewBuilding(buildingID);
+        newBuilding.setPosition(buildNode.position);
+        newBuilding.setCurrentNode(buildNode);
+        int refID = MathUtils.random(10000);
+        while (levelState.activeEnemies.containsKey(refID)) {
+            refID = MathUtils.random(10000);
+        }
+        levelState.activeBuildings.put(refID, newBuilding);
+    }
+
+    public LevelState getLevelState() {
+        return levelState;
     }
 }

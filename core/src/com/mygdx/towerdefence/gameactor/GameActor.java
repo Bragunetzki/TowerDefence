@@ -10,6 +10,7 @@ public interface GameActor {
     int getID();
     Priority getPriority();
     Vector2 getPosition();
+    void setPosition(Vector2 position);
     String getName();
     Action getAction();
     int applyDamage(int damage);
@@ -20,4 +21,5 @@ public interface GameActor {
     void setTarget(GameActor target);
     ActorType getType();
     PathNode getCurrentNode();
+    void setCurrentNode(PathNode node);
 }

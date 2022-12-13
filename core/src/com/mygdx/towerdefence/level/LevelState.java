@@ -1,9 +1,10 @@
 package com.mygdx.towerdefence.level;
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.LevelConfig;
+import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.GameActor;
 
-import java.nio.file.Path;
 import java.util.*;
 
 public class LevelState {
@@ -19,19 +20,18 @@ public class LevelState {
         float priority;
     }
 
-    public List<GameActor> activeBuildings;
-    public List<GameActor> activeEnemies;
-    public PathNode nodeGraph;
+    public Map<Integer, GameActor> activeBuildings;
+    public Map<Integer, GameActor> activeEnemies;
+    public List<PathNode> nodeGraph;
     public int inLevelCurrency;
 
     public LevelState(LevelConfig config) {
-        inLevelCurrency = 0;
-        activeBuildings = new ArrayList<>();
-        activeEnemies = new ArrayList<>();
+        inLevelCurrency = config.startingCurrency;
+        activeBuildings = new HashMap<>();
+        activeEnemies = new HashMap<>();
         nodeGraph = config.nodeGraph;
     }
 
-    //TODO: pathfinding
     public PathNode[] getPath(PathNode startNode, PathNode targetNode) {
         Queue<SearchNode> frontier = new PriorityQueue<>(10, new Comparator<SearchNode>() {
             @Override
@@ -55,6 +55,8 @@ public class LevelState {
                 Collections.reverse(path);
                 return path.toArray(new PathNode[0]);
             }
+
+            if (q.node.isBuildable) continue; //ignore children of building plots.
 
             for (PathNode next : q.node.connections) {
                 float newCost = costSoFar.get(q.node) + next.position.dst(q.node.position);

@@ -4,14 +4,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.mygdx.towerdefence.TowerDefenceGame;
 
-public class LoadingScreen extends GenericScreen {
+public class LoadingScreen extends BasicScreen {
     private final ProgressBar bar;
 
     public LoadingScreen(TowerDefenceGame game) {
         super(game);
         bar = new ProgressBar(0, 100, 1, false, game.getAssetLoader().getSkin(), "default-horizontal");
-        bar.setSize(GenericScreen.WORLD_SIZE_X / 3, 20);
-        bar.setPosition((GenericScreen.WORLD_SIZE_X - bar.getWidth()) / 2, (GenericScreen.WORLD_SIZE_Y - bar.getHeight()) / 2);
+        bar.setSize(BasicScreen.WORLD_SIZE_X / 3, 20);
+        bar.setPosition((BasicScreen.WORLD_SIZE_X - bar.getWidth()) / 2, (BasicScreen.WORLD_SIZE_Y - bar.getHeight()) / 2);
         bar.setAnimateDuration(0);
         Stage stage = new Stage(getViewport());
         stage.addActor(bar);

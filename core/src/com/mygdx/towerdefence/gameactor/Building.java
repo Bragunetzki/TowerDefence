@@ -2,16 +2,16 @@ package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
+import com.mygdx.towerdefence.action.Action;
 import com.mygdx.towerdefence.config.BuildingConfig;
 import com.mygdx.towerdefence.level.PathNode;
-import com.mygdx.towerdefence.action.Action;
 
 public class Building implements GameActor, Pool.Poolable {
     private final int id;
     private int health;
     private final int maxHealth;
     private final Priority priority;
-    private final Vector2 position;
+    private Vector2 position;
     private final String name;
     private final Action action;
     private final int demolitionCurrency;
@@ -20,6 +20,7 @@ public class Building implements GameActor, Pool.Poolable {
     private float buildTimer;
     private GameActor target;
     private final ActorType actorType;
+    private PathNode currentNode;
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -34,6 +35,9 @@ public class Building implements GameActor, Pool.Poolable {
         actionTimer = action.getRate();
         target = null;
         actorType = ActorType.Building;
+
+        if (id != 0)
+            buildTimer = 5000;
     }
 
     public Building(BuildingConfig config, Action action) {
@@ -43,7 +47,7 @@ public class Building implements GameActor, Pool.Poolable {
     public int applyDamage(int damage) {
         health -= damage;
         if (health < 0) health = 0;
-        return  health;
+        return health;
     }
 
     @Override
@@ -69,6 +73,11 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public Vector2 getPosition() {
         return position;
+    }
+
+    @Override
+    public void setPosition(Vector2 position) {
+        this.position = position;
     }
 
     @Override
@@ -135,6 +144,11 @@ public class Building implements GameActor, Pool.Poolable {
 
     @Override
     public PathNode getCurrentNode() {
-        return null;
+        return currentNode;
+    }
+
+    @Override
+    public void setCurrentNode(PathNode node) {
+        this.currentNode = node;
     }
 }
