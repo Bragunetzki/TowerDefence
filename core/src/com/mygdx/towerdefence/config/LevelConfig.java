@@ -6,7 +6,7 @@ import com.mygdx.towerdefence.level.PathNode;
 import java.util.List;
 
 public class LevelConfig {
-    public int ID;
+    public int id;
     public int startingCurrency;
     public List<WaveConfig> waves;
     public String backgroundTextureName;

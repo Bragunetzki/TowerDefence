@@ -12,7 +12,7 @@ public class BuildingConfig {
     public Priority priority;
     public int cost;
     public String name;
-    public String SpriteName;
+    public String spriteName;
     public int demolitionCurrency;
     public List<Integer> upgradeIDs;
     public float actionRate;

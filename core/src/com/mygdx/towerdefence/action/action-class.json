@@ -1,0 +1,5 @@
+{
+  "Default": "DoNothingAction",
+  "Nothing": "DoNothingAction",
+  "Attack":  "BasicAttackAction"
+}
