@@ -1,31 +1,38 @@
 package com.mygdx.towerdefence;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
+import com.mygdx.towerdefence.config.Creator;
+import com.mygdx.towerdefence.framework.AssetLoader;
+import com.mygdx.towerdefence.screens.LoadingScreen;
 
-public class TowerDefenceGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
+public class TowerDefenceGame extends Game {
+    private AssetLoader assets;
+    private Creator creator;
 
-	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+    @Override
+    public void create() {
+        assets = new AssetLoader();
+        assets.loadAll();
+        creator = new Creator();
+        this.setScreen(new LoadingScreen(this));
+    }
+
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    @Override
+    public void dispose() {
+        assets.dispose();
+        if (screen != null) screen.dispose();
+    }
+
+    public AssetLoader getAssetLoader() {
+        return assets;
+    }
+
+    public Creator getCreator() {
+        return creator;
+    }
 }

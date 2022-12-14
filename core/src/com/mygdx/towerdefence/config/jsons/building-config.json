@@ -1,0 +1,23 @@
+[
+  {
+    "id": 123,
+    "maxHealth": 100,
+    "priority": "Default",
+    "cost": 10,
+    "name": "Tower1",
+    "spriteName": "Tower1.jpg",
+    "demolitionCurrency": 1,
+    "upgradeIDs": [
+      123,
+      124,
+      125,
+      126
+    ],
+    "actionRate": 1.5,
+    "actionType": "Attack",
+    "actionRange": 50.0,
+    "actionParams": {
+      "damage": 100
+    }
+  }
+]
