@@ -14,12 +14,12 @@ public class TowerList {
 
     private int selectedElementIndex;
     // если -1, то никакой элемент не выбран
-    // не нужна в json
+    // не нужно в json
 
     public TowerList() {
         towers = new ArrayList<>();
         towers.add(new Tower("BASE", 100, 0, "", new ArrayList<TowerUpgrade>(),
-                0, Tower.ActionType.BASE, 0, 0));
+                0, Tower.ActionType.NONE, 0, 0, null));
         selectedElementIndex = -1;
     }
 

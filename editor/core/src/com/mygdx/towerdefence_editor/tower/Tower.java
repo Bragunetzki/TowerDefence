@@ -4,23 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 public class Tower {
 
     public enum ActionType {
-        BASE,
+        NONE,
         ECONOMIC,
         ATTACK
         // что-то еще
     }
 
     public enum ActionParameter {
-        RATE,
-        RANGE
-        // MAX_HEALTH -- улучшается на уровне или в дереве технологий?
-        // some EFFECT_PARAMETERS -- зависит от реализации эффектов
+
     }
 
     private String name;
@@ -30,14 +28,16 @@ public class Tower {
     private List<TowerUpgrade> upgrades;
     private int demolitionCurrency;
     private ActionType actionType;
-    private int rate;
-    private int range;
+    private int actionRate;
+    private int actionRange;
+    private Map<ActionParameter, Float> actionParameters;
+    // добавить эффекты
 
     public Tower() {
     }
 
     public Tower(String name, int maxHealth, int cost, String spriteFileName, List<TowerUpgrade> upgrades,
-                 int demolitionCurrency, ActionType actionType, int range, int rate) {
+                 int demolitionCurrency, ActionType actionType, int range, int rate, Map<ActionParameter, Float> actionParameters) {
         this.name = name;
         this.maxHealth = maxHealth;
         this.cost = cost;
@@ -45,14 +45,9 @@ public class Tower {
         this.upgrades = upgrades;
         this.demolitionCurrency = demolitionCurrency;
         this.actionType = actionType;
-        this.range = range;
-        this.rate = rate;
+        this.actionRange = range;
+        this.actionRate = rate;
+        this.actionParameters = actionParameters;
     }
 
-    /*
-    private final int id; // башне наверное не нужен, нужен только в списке всех башен
-    public Tower(int id) {
-        this.id = id;
-    }
-     */
 }

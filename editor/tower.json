@@ -5,13 +5,11 @@
   "upgrades": [
     {
       "price": 2,
-      "modifiers": {
-        "RANGE": 1.1
-      }
+      "modifiers": {}
     }
   ],
   "demolitionCurrency": 5,
   "actionType": "ATTACK",
-  "rate": 5,
-  "range": 10
+  "actionRate": 5,
+  "actionRange": 10
 }

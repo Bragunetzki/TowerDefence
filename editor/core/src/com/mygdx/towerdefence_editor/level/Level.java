@@ -15,6 +15,5 @@ public class Level {
     private int startCurrency;
     private int reward;
     private HashMap<String, Float> enemyModifiers;
-    //после того как добавлю класс enemy, вместо String поставлю соответствующий тип
     private LevelMap map;
 }
