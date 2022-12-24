@@ -1,9 +1,9 @@
 package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.config.EnemyConfig;
-import com.mygdx.towerdefence.level.PathNode;
 import com.mygdx.towerdefence.action.Action;
+import com.mygdx.towerdefence.config.EnemyConfig;
+import com.mygdx.towerdefence.priority.Priority;
 
 public class Enemy implements GameActor {
     public final static int NODE_SNAP_DISTANCE = 5;
@@ -21,8 +21,7 @@ public class Enemy implements GameActor {
     private final ActorType actorType;
 
     private GameActor target;
-    private PathNode targetNode;
-    private PathNode currentNode;
+    private Vector2 moveTarget;
 
     public Enemy(EnemyConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -125,32 +124,22 @@ public class Enemy implements GameActor {
                 return;
         }
 
-        if (targetNode.position.dst(position) > NODE_SNAP_DISTANCE) { //move towards target node.
-            Vector2 direction = targetNode.position.cpy().sub(position);
+        if (moveTarget.dst(position) > NODE_SNAP_DISTANCE) { //move towards target node.
+            Vector2 direction = moveTarget.cpy().sub(position);
             position.add(direction.nor().scl(speed).scl(delta));
         }
         else { //snap to target node if close enough.
-            position.set(targetNode.position);
-            currentNode = targetNode;
+            position.set(moveTarget);
         }
     }
 
-    public void setTargetNode(PathNode targetNode) {
-        this.targetNode = targetNode;
-    }
-
-    public void setCurrentNode(PathNode currentNode) {
-        this.currentNode = currentNode;
+    public void setMoveTarget(Vector2 moveTarget) {
+        this.moveTarget = moveTarget;
     }
 
     @Override
     public ActorType getType() {
         return actorType;
-    }
-
-    @Override
-    public PathNode getCurrentNode() {
-        return currentNode;
     }
 
     @Override

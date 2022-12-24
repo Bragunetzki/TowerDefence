@@ -1,8 +1,8 @@
 package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.level.PathNode;
 import com.mygdx.towerdefence.action.Action;
+import com.mygdx.towerdefence.priority.Priority;
 
 public interface GameActor {
     int getHealth();
@@ -20,6 +20,4 @@ public interface GameActor {
     GameActor getTarget();
     void setTarget(GameActor target);
     ActorType getType();
-    PathNode getCurrentNode();
-    void setCurrentNode(PathNode node);
 }

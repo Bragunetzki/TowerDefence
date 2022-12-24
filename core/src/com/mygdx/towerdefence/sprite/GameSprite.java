@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class GameSprite extends Group {
-    private TextureRegion texture;
+    private final TextureRegion texture;
 
     public GameSprite() {
         this.texture = null;

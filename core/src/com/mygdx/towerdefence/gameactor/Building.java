@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.towerdefence.action.Action;
 import com.mygdx.towerdefence.config.BuildingConfig;
-import com.mygdx.towerdefence.level.PathNode;
+import com.mygdx.towerdefence.priority.Priority;
 
 public class Building implements GameActor, Pool.Poolable {
     private final int id;
@@ -20,7 +20,6 @@ public class Building implements GameActor, Pool.Poolable {
     private float buildTimer;
     private GameActor target;
     private final ActorType actorType;
-    private PathNode currentNode;
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -140,15 +139,5 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public ActorType getType() {
         return actorType;
-    }
-
-    @Override
-    public PathNode getCurrentNode() {
-        return currentNode;
-    }
-
-    @Override
-    public void setCurrentNode(PathNode node) {
-        this.currentNode = node;
     }
 }

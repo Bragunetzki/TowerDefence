@@ -1,9 +1,9 @@
 package com.mygdx.towerdefence.level;
 
-import com.badlogic.gdx.math.Path;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.LevelConfig;
 import com.mygdx.towerdefence.config.WaveConfig;
+import com.mygdx.towerdefence.events.SpawnEnemyEvent;
+import com.mygdx.towerdefence.screens.LevelScreen;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,14 +19,16 @@ public class WaveGenerator {
     private float enemyTimer;
     private final Random random;
     private int enemiesDepleted;
-    private final PathNode spawnNode;
+    private final int[] spawner;
 
     public WaveGenerator(LevelController controller, LevelConfig levelConfig) {
         waves = new LinkedList<>(levelConfig.waves);
         isActive = false;
         this.controller = controller;
         random = new Random();
-        spawnNode = controller.getLevelState().nodeGraph.get(levelConfig.spawnerNodeIndex);
+        spawner = new int[2];
+        spawner[0] = (int) levelConfig.spawnerCoords.x;
+        spawner[1] = (int) levelConfig.spawnerCoords.y;
     }
 
     public void startGenerator() {
@@ -49,7 +51,7 @@ public class WaveGenerator {
         if (enemyTimer <= 0) {
             int index = random.nextInt(activeWave.enemyTypes.size());
             int enemyID = activeWave.enemyTypes.get(index);
-            controller.addEnemy(enemyID, spawnNode);
+            LevelScreen.eventQueue.addStateEvent(new SpawnEnemyEvent(enemyID, spawner[0], spawner[1]));
             enemiesDepleted++;
             if (enemiesDepleted >= activeWave.enemyCount) {
                 isWaveActive = false;
@@ -57,8 +59,7 @@ public class WaveGenerator {
                 waveTimer = activeWave.waveDelay;
             }
             enemyTimer = activeWave.enemyInterval;
-        }
-        else if (waveTimer <= 0) {
+        } else if (waveTimer <= 0) {
             isWaveActive = true;
             enemiesDepleted = 0;
             enemyTimer = activeWave.enemyInterval;

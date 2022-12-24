@@ -4,6 +4,8 @@ import com.mygdx.towerdefence.action.Action;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.Enemy;
 
+import java.util.Map;
+
 public class Creator {
     public Building getNewBuilding(int ID) {
         return null;
@@ -26,6 +28,10 @@ public class Creator {
     }
 
     public LevelConfig getLevelConfig(int ID) {
+        return null;
+    }
+
+    public Map<Integer, BuildingConfig> getBuildingMap() {
         return null;
     }
 }
