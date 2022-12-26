@@ -19,7 +19,15 @@ public class AssetLoader {
     }
 
     public void loadAll() {
-
+        assets.load("sprites/enemies/boar.png", Texture.class);
+        assets.load("sprites/enemies/boarRanger.png", Texture.class);
+        assets.load("sprites/buildings/tower.png", Texture.class);
+        assets.load("sprites/buildings/base.png", Texture.class);
+        assets.load("sprites/buildings/mine.png", Texture.class);
+        assets.load("background.png", Texture.class);
+        assets.load("road.png", Texture.class);
+        assets.load("plot.png", Texture.class);
+        assets.load("sprites/projectile.png", Texture.class);
     }
 
     public BitmapFont getFont() {

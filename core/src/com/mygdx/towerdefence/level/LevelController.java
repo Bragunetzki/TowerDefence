@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.LevelConfig;
 import com.mygdx.towerdefence.events.ActorDeathEvent;
-import com.mygdx.towerdefence.events.SpawnBuildingEvent;
+import com.mygdx.towerdefence.events.ConstructBuildingEvent;
 import com.mygdx.towerdefence.events.StateHolder;
 import com.mygdx.towerdefence.gameactor.Enemy;
 import com.mygdx.towerdefence.gameactor.GameActor;
@@ -20,7 +20,7 @@ public class LevelController {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         levelState = new LevelState(creator, levelConfig);
         Vector2 basePosition = levelConfig.baseTileCoords;
-        LevelScreen.eventQueue.addStateEvent(new SpawnBuildingEvent(0, (int) basePosition.x, (int) basePosition.y));
+        LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y));
         pathfindingTimer = 0;
     }
 

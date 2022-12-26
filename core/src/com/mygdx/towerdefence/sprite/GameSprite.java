@@ -14,7 +14,7 @@ public class GameSprite extends Group {
     public GameSprite(TextureRegion texture, float x, float y, float width, float height) {
         this.texture = texture;
         setSize(width, height);
-        setOrigin(width/2, height/2);
+        setOrigin(width / 2, height / 2);
         setPosition(x, y);
     }
 

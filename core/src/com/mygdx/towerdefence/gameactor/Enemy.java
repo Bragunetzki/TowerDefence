@@ -7,7 +7,6 @@ import com.mygdx.towerdefence.priority.Priority;
 
 public class Enemy implements GameActor {
     public final static int NODE_SNAP_DISTANCE = 5;
-
     private final int id;
     private int health;
     private final int maxHealth;
@@ -19,7 +18,7 @@ public class Enemy implements GameActor {
     private boolean isActive;
     private float actionTimer;
     private final ActorType actorType;
-
+    private int refID;
     private GameActor target;
     private Vector2 moveTarget;
 
@@ -96,10 +95,12 @@ public class Enemy implements GameActor {
     @Override
     public void act(float delta) {
         move(delta);
+
+        if (action.getRate() < 0) return;
         actionTimer -= delta;
         if (actionTimer <= 0) {
-            action.call(this, delta, target);
-            actionTimer = action.getRate();
+            if (action.call(this, delta, target))
+                actionTimer = action.getRate();
         }
     }
 
@@ -140,6 +141,16 @@ public class Enemy implements GameActor {
     @Override
     public ActorType getType() {
         return actorType;
+    }
+
+    @Override
+    public void setRefID(int refID) {
+        this.refID = refID;
+    }
+
+    @Override
+    public int getRefID() {
+        return refID;
     }
 
     @Override

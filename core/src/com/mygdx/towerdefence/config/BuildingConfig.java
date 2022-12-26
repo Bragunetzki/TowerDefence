@@ -3,8 +3,8 @@ package com.mygdx.towerdefence.config;
 import com.mygdx.towerdefence.action.ActionType;
 import com.mygdx.towerdefence.priority.Priority;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BuildingConfig {
     public int id;
@@ -18,5 +18,5 @@ public class BuildingConfig {
     public float actionRate;
     public ActionType actionType;
     public float actionRange;
-    public HashMap<String, Float> actionParams;
+    public Map<String, Float> actionParams;
 }

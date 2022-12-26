@@ -12,7 +12,6 @@ import java.util.Random;
 public class WaveGenerator {
     private final Queue<WaveConfig> waves;
     private WaveConfig activeWave;
-    private final LevelController controller;
     private boolean isActive;
     private boolean isWaveActive = false;
     private float waveTimer;
@@ -24,7 +23,6 @@ public class WaveGenerator {
     public WaveGenerator(LevelController controller, LevelConfig levelConfig) {
         waves = new LinkedList<>(levelConfig.waves);
         isActive = false;
-        this.controller = controller;
         random = new Random();
         spawner = new int[2];
         spawner[0] = (int) levelConfig.spawnerCoords.x;

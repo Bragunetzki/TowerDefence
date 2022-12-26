@@ -20,6 +20,7 @@ public class Building implements GameActor, Pool.Poolable {
     private float buildTimer;
     private GameActor target;
     private final ActorType actorType;
+    private int refID;
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -105,10 +106,11 @@ public class Building implements GameActor, Pool.Poolable {
             return;
         }
 
+        if (action.getRate() < 0) return;
         actionTimer -= delta;
         if (actionTimer <= 0) {
-            action.call(this, delta, target);
-            actionTimer = action.getRate();
+            if (action.call(this, delta, target))
+                actionTimer = action.getRate();
         }
     }
 
@@ -134,6 +136,16 @@ public class Building implements GameActor, Pool.Poolable {
 
     public void setBuildTime(float time) {
         buildTimer = time;
+    }
+
+    @Override
+    public void setRefID(int refID) {
+        this.refID = refID;
+    }
+
+    @Override
+    public int getRefID() {
+        return refID;
     }
 
     @Override

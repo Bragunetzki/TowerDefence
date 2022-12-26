@@ -23,6 +23,7 @@ public class SpawnEnemyEvent implements StateEvent{
         while (state.getEnemies().containsKey(refID)) {
             refID = MathUtils.random(10000);
         }
+        newEnemy.setRefID(refID);
         state.getEnemies().put(refID, newEnemy);
     }
 }

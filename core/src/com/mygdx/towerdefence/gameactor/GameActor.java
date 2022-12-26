@@ -20,4 +20,6 @@ public interface GameActor {
     GameActor getTarget();
     void setTarget(GameActor target);
     ActorType getType();
+    void setRefID(int refID);
+    int getRefID();
 }

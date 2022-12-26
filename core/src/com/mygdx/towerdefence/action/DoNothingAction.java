@@ -2,19 +2,21 @@ package com.mygdx.towerdefence.action;
 
 import com.mygdx.towerdefence.gameactor.GameActor;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class DoNothingAction implements Action {
     private final float rate;
     private final float range;
+    private final static String[] argList = new String[]{};
 
-    public DoNothingAction(float rate, float range, HashMap<String, Float> params) {
+    public DoNothingAction(float rate, float range, Map<String, Float> params) {
         this.rate = rate;
         this.range = range;
     }
 
     @Override
-    public void call(GameActor caller, float delta, GameActor target) {
+    public boolean call(GameActor caller, float delta, GameActor target) {
+        return false;
     }
 
     @Override

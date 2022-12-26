@@ -3,7 +3,7 @@ package com.mygdx.towerdefence.config;
 import com.mygdx.towerdefence.action.ActionType;
 import com.mygdx.towerdefence.priority.Priority;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class EnemyConfig {
     public int id;
@@ -16,5 +16,5 @@ public class EnemyConfig {
     public float actionRate;
     public float actionRange;
     public ActionType actionType;
-    public HashMap<String, Float> actionParams;
+    public Map<String, Float> actionParams;
 }

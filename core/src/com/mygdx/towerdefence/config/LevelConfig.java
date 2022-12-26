@@ -6,7 +6,7 @@ import com.mygdx.towerdefence.level.Tile;
 import java.util.List;
 
 public class LevelConfig {
-    public int ID;
+    public int id;
     public String backgroundTextureName;
     public String plotTextureName;
     public String roadTextureName;

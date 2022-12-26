@@ -1,5 +1,8 @@
 package com.mygdx.towerdefence.events;
 
+import com.mygdx.towerdefence.config.EnemyConfig;
+import com.mygdx.towerdefence.screens.LevelScreen;
+
 public class ActorDeathEvent implements StateEvent {
     private final int refID;
     private final boolean isEnemy;
@@ -11,8 +14,12 @@ public class ActorDeathEvent implements StateEvent {
 
     @Override
     public void execute(StateHolder state) {
-        if (isEnemy)
+        if (isEnemy) {
+            EnemyConfig config = state.getCreator().getEnemyConfig(state.getEnemies().get(refID).getID());
+            LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(config.reward));
             state.getEnemies().remove(refID);
-        else state.getBuildings().remove(refID);
+        } else {
+            state.getBuildings().remove(refID);
+        }
     }
 }
