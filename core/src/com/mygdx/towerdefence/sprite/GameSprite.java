@@ -16,6 +16,7 @@ public class GameSprite extends Group {
         setSize(width, height);
         setOrigin(width / 2, height / 2);
         setPosition(x, y);
+        setBounds(x, y, width, height);
     }
 
     @Override
@@ -24,5 +25,11 @@ public class GameSprite extends Group {
             batch.draw(texture, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
         super.draw(batch, parentAlpha);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        setBounds(getX(), getY(), getWidth(), getHeight());
     }
 }

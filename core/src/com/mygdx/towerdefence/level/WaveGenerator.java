@@ -18,18 +18,17 @@ public class WaveGenerator {
     private float enemyTimer;
     private final Random random;
     private int enemiesDepleted;
-    private final int[] spawner;
+    private final int spawnerGridX, spawnerGridY;
 
-    public WaveGenerator(LevelController controller, LevelConfig levelConfig) {
+    public WaveGenerator(LevelConfig levelConfig) {
         waves = new LinkedList<>(levelConfig.waves);
         isActive = false;
         random = new Random();
-        spawner = new int[2];
-        spawner[0] = (int) levelConfig.spawnerCoords.x;
-        spawner[1] = (int) levelConfig.spawnerCoords.y;
+        spawnerGridX = (int) levelConfig.spawnerCoords.x;
+        spawnerGridY = (int) levelConfig.spawnerCoords.y;
     }
 
-    public void startGenerator() {
+    public void start() {
         activeWave = waves.remove();
         waveTimer = activeWave.waveDelay;
         enemyTimer = activeWave.enemyInterval;
@@ -41,23 +40,29 @@ public class WaveGenerator {
     public void update(float delta) {
         if (!isActive) return;
 
-        if (isWaveActive) enemyTimer -= delta;
-        else {
+        if (isWaveActive) {
+            enemyTimer -= delta;
+        } else {
             waveTimer -= delta;
+
         }
 
-        if (enemyTimer <= 0) {
+        if (enemyTimer <= 0 && isWaveActive) {
             int index = random.nextInt(activeWave.enemyTypes.size());
             int enemyID = activeWave.enemyTypes.get(index);
-            LevelScreen.eventQueue.addStateEvent(new SpawnEnemyEvent(enemyID, spawner[0], spawner[1]));
+            LevelScreen.eventQueue.addStateEvent(new SpawnEnemyEvent(enemyID, spawnerGridX, spawnerGridY));
             enemiesDepleted++;
             if (enemiesDepleted >= activeWave.enemyCount) {
                 isWaveActive = false;
+                if (waves.isEmpty()) {
+                    isActive = false;
+                    return;
+                }
                 activeWave = waves.remove();
                 waveTimer = activeWave.waveDelay;
             }
             enemyTimer = activeWave.enemyInterval;
-        } else if (waveTimer <= 0) {
+        } else if (waveTimer <= 0 && !isWaveActive) {
             isWaveActive = true;
             enemiesDepleted = 0;
             enemyTimer = activeWave.enemyInterval;

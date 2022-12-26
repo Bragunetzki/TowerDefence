@@ -19,10 +19,12 @@ public class GameActorView extends Group {
         setPosition(x, y);
         healthBar = new ProgressBar(0, 100, 1, false, skin, "default-horizontal");
         healthBar.setSize(width, width / 5);
-        healthBar.setPosition(x - width / 2, y + width / 2);
-        healthBar.setAnimateDuration(100);
-        healthBar.setColor(Color.RED);
+        healthBar.getStyle().background.setMinHeight(10);
+        healthBar.getStyle().knobBefore.setMinHeight(10);
         addActor(healthBar);
+        healthBar.setPosition(0, getHeight() + getHeight() / 5);
+        healthBar.setAnimateDuration(100);
+        healthBar.setValue(100);
     }
 
     @Override
@@ -30,7 +32,9 @@ public class GameActorView extends Group {
         if (texture != null) {
             batch.draw(texture, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
+        healthBar.setColor(Color.RED);
         super.draw(batch, parentAlpha);
+        batch.setColor(Color.WHITE);
     }
 
     @Override
@@ -41,5 +45,6 @@ public class GameActorView extends Group {
 
     public void setHealthBarPercentage(float value) {
         healthBar.setValue(value);
+        if (healthBar.getValue() < 0) healthBar.setValue(0);
     }
 }

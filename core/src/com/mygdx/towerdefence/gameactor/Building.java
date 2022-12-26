@@ -37,7 +37,7 @@ public class Building implements GameActor, Pool.Poolable {
         actorType = ActorType.Building;
 
         if (id != 0)
-            buildTimer = 5000;
+            buildTimer = 5;
     }
 
     public Building(BuildingConfig config, Action action) {
@@ -76,8 +76,9 @@ public class Building implements GameActor, Pool.Poolable {
     }
 
     @Override
-    public void setPosition(Vector2 position) {
-        this.position = position;
+    public void setPosition(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
     }
 
     @Override

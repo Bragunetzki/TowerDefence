@@ -15,7 +15,7 @@ public class LevelScreen extends BasicScreen {
         super(game);
         //Сейчас игра не будет работать, т.к. Creator возвращает лишь нули.
         controller = new LevelController(game.getCreator(), levelID);
-        levelView = new LevelView(this, game, levelID);
+        levelView = new LevelView(this, game, levelID, controller.getLevelState().getMap().mapArr);
         eventQueue.subscribeState(controller.getLevelState());
         eventQueue.subscribeView(levelView);
         getStageMultiplexer().addStage(levelView);

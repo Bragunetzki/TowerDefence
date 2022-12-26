@@ -18,6 +18,7 @@ public class DamageActorEvent implements StateEvent {
         if (targetsEnemy) target = state.getEnemies().get(refID);
         else target = state.getBuildings().get(refID);
 
-        target.applyDamage(damage);
+        if (target != null)
+            target.applyDamage(damage);
     }
 }

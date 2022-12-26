@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.events;
 
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.mygdx.towerdefence.sprite.BuildingTile;
+import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 
 public class ConstructBuildingViewEvent implements ViewEvent {
     int x, y;
@@ -12,7 +12,8 @@ public class ConstructBuildingViewEvent implements ViewEvent {
 
     @Override
     public void execute(ViewHolder view) {
-        BuildingTile tile = view.getTile(x, y);
+        BuildingTileSprite tile = view.getTile(x, y);
         tile.setTouchable(Touchable.disabled);
+        tile.setHoverable(false);
     }
 }

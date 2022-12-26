@@ -5,7 +5,6 @@ import com.mygdx.towerdefence.action.*;
 import com.mygdx.towerdefence.framework.TileType;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.Enemy;
-import com.mygdx.towerdefence.level.Tile;
 import com.mygdx.towerdefence.priority.DefaultPriority;
 
 import java.lang.reflect.Constructor;
@@ -101,11 +100,10 @@ public class Creator {
         base.SpriteName = "base.png";
 
         BuildingConfig basicTower = new BuildingConfig();
-        basicTower.actionParams = Map.of(
-                "damage", 5f
-        );
+        basicTower.actionParams = new HashMap<>();
+        basicTower.actionParams.put("damage", 5f);
         basicTower.actionRange = 120;
-        basicTower.actionRate = 1000;
+        basicTower.actionRate = 1;
         basicTower.actionType = ActionType.BasicAttack;
         basicTower.id = 1;
         basicTower.cost = 50;
@@ -116,11 +114,10 @@ public class Creator {
         basicTower.SpriteName = "tower.png";
 
         BuildingConfig mine = new BuildingConfig();
-        mine.actionParams = Map.of(
-                "value", 10f
-        );
+        mine.actionParams = new HashMap<>();
+        mine.actionParams.put("value", 5f);
         mine.actionRange = 0;
-        mine.actionRate = 1000;
+        mine.actionRate = 1;
         mine.actionType = ActionType.GenerateCurrency;
         mine.id = 2;
         mine.cost = 10;
@@ -137,11 +134,10 @@ public class Creator {
 
     private void initEnemies() {
         EnemyConfig meleeEnemy = new EnemyConfig();
-        meleeEnemy.actionParams = Map.of(
-                "damage", 5f
-        );
-        meleeEnemy.actionRange = 7;
-        meleeEnemy.actionRate = 1500;
+        meleeEnemy.actionParams = new HashMap<>();
+        meleeEnemy.actionParams.put("damage", 5f);
+        meleeEnemy.actionRange = 45;
+        meleeEnemy.actionRate = 1.5f;
         meleeEnemy.id = 1;
         meleeEnemy.actionType = ActionType.BasicAttack;
         meleeEnemy.maxHealth = 15;
@@ -152,18 +148,17 @@ public class Creator {
         meleeEnemy.SpriteName = "boar.png";
 
         EnemyConfig rangedEnemy = new EnemyConfig();
-        rangedEnemy.actionParams = Map.of(
-                "damage", 3f
-        );
+        rangedEnemy.actionParams = new HashMap<>();
+        rangedEnemy.actionParams.put("damage", 3f);
         rangedEnemy.actionRange = 100;
-        rangedEnemy.actionRate = 1500;
+        rangedEnemy.actionRate = 1.5f;
         rangedEnemy.id = 2;
         rangedEnemy.actionType = ActionType.BasicAttack;
         rangedEnemy.maxHealth = 10;
         rangedEnemy.name = "Boar Ranger";
         rangedEnemy.priority = new DefaultPriority();
         rangedEnemy.reward = 5;
-        rangedEnemy.speed = 120;
+        rangedEnemy.speed = 150;
         rangedEnemy.SpriteName = "boarRanger.png";
 
         enemyConfigMap.put(meleeEnemy.id, meleeEnemy);
@@ -177,36 +172,36 @@ public class Creator {
         level.roadTextureName = "road.png";
         level.plotTextureName = "plot.png";
         level.startingCurrency = 10;
-        level.tileMap = new Tile[10][10];
+        level.tileMap = new TileType[10][10];
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                level.tileMap[i][j] = new Tile(TileType.Background);
+                level.tileMap[i][j] = TileType.Background;
             }
         }
-        level.tileMap[0][2].type = TileType.Road;
-        level.tileMap[1][2].type = TileType.Road;
-        level.tileMap[2][2].type = TileType.Road;
-        level.tileMap[3][2].type = TileType.Road;
-        level.tileMap[3][3].type = TileType.Road;
-        level.tileMap[3][4].type = TileType.Road;
-        level.tileMap[3][5].type = TileType.Road;
-        level.tileMap[4][5].type = TileType.Road;
-        level.tileMap[5][5].type = TileType.Road;
-        level.tileMap[5][4].type = TileType.Road;
-        level.tileMap[6][4].type = TileType.Road;
-        level.tileMap[7][4].type = TileType.Road;
-        level.tileMap[8][4].type = TileType.Plot;
-        level.tileMap[2][1].type = TileType.Plot;
-        level.tileMap[5][3].type = TileType.Plot;
-        level.tileMap[5][6].type = TileType.Plot;
+        level.tileMap[0][2] = TileType.Road;
+        level.tileMap[1][2] = TileType.Road;
+        level.tileMap[2][2] = TileType.Road;
+        level.tileMap[3][2] = TileType.Road;
+        level.tileMap[3][3] = TileType.Road;
+        level.tileMap[3][4] = TileType.Road;
+        level.tileMap[3][5] = TileType.Road;
+        level.tileMap[4][5] = TileType.Road;
+        level.tileMap[5][5] = TileType.Road;
+        level.tileMap[5][4] = TileType.Road;
+        level.tileMap[6][4] = TileType.Road;
+        level.tileMap[7][4] = TileType.Road;
+        level.tileMap[8][4] = TileType.Plot;
+        level.tileMap[2][1] = TileType.Plot;
+        level.tileMap[5][3] = TileType.Plot;
+        level.tileMap[5][6] = TileType.Plot;
         level.spawnerCoords = new Vector2(0, 2);
         level.baseTileCoords = new Vector2(8, 4);
         level.waves = new LinkedList<>();
         WaveConfig wave = new WaveConfig();
-        wave.enemyCount = 10;
-        wave.waveDelay = 10000;
-        wave.enemyInterval = 2000;
+        wave.enemyCount = 3;
+        wave.waveDelay = 20;
+        wave.enemyInterval = 4;
         wave.enemyTypes = new LinkedList<>();
         wave.enemyTypes.add(1);
         wave.enemyTypes.add(2);

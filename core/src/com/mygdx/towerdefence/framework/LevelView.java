@@ -1,5 +1,6 @@
 package com.mygdx.towerdefence.framework;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,8 +20,9 @@ import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.level.Tile;
 import com.mygdx.towerdefence.screens.BasicScreen;
 import com.mygdx.towerdefence.screens.LevelScreen;
-import com.mygdx.towerdefence.sprite.BuildingTile;
+import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 import com.mygdx.towerdefence.sprite.GameActorView;
+import com.mygdx.towerdefence.sprite.GameSprite;
 import com.mygdx.towerdefence.sprite.Projectile;
 
 import java.util.*;
@@ -28,17 +30,20 @@ import java.util.*;
 public class LevelView extends Stage implements ViewHolder {
     public static final float WORLD_SIZE_X = 1920;
     public static final float WORLD_SIZE_Y = 1080;
-    public final static float TilE_SIZE = 50;
+    public static final float GRID_CORNER_X = 460;
+    public static final float GRID_CORNER_Y = 40;
+    public final static float TilE_SIZE = 100;
 
     private final Map<Integer, GameActorView> enemies;
     private final Map<Integer, GameActorView> buildings;
     private final AssetLoader assets;
     private final Creator creator;
     private final Texture[][] mapTextures;
-    private final List<BuildingTile> tileList;
+    private final Tile[][] map;
+    private final List<BuildingTileSprite> tileList;
     private final Label currencyLabel;
 
-    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID) {
+    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
         super(screen.getViewport());
         enemies = new HashMap<>();
         buildings = new HashMap<>();
@@ -47,14 +52,14 @@ public class LevelView extends Stage implements ViewHolder {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         tileList = new LinkedList<>();
         currencyLabel = new Label("0", assets.getSkin());
-        currencyLabel.setPosition(0, getHeight() * 0.9f);
+        currencyLabel.setPosition(50, 30);
         addActor(currencyLabel);
+        this.map = map;
 
         Texture backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
         Texture roadTexture = assets.getTexture(levelConfig.roadTextureName);
 
-        Tile[][] map = levelConfig.tileMap;
         mapTextures = new Texture[map.length][map[0].length];
 
         for (int i = 0; i < map.length; i++) {
@@ -64,7 +69,8 @@ public class LevelView extends Stage implements ViewHolder {
                         mapTextures[i][j] = backgroundTexture;
                         break;
                     case Plot:
-                        BuildingTile tile = new BuildingTile(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE);
+                        BuildingTileSprite tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE);
+                        tile.setPosition( map[i][j].x, map[i][j].y);
                         addActor(tile);
                         tileList.add(tile);
                         mapTextures[i][j] = null;
@@ -79,12 +85,15 @@ public class LevelView extends Stage implements ViewHolder {
 
     @Override
     public void draw() {
+        getBatch().begin();
         for (int i = 0; i < mapTextures.length; i++) {
             for (int j = 0; j < mapTextures[0].length; j++) {
-                if (mapTextures[i][j] != null)
-                    this.getBatch().draw(mapTextures[i][j], i * TilE_SIZE, j * TilE_SIZE, (i + 1) * TilE_SIZE, (j + 1) * TilE_SIZE);
+                if (mapTextures[i][j] != null) {
+                    this.getBatch().draw(mapTextures[i][j], map[i][j].x,  map[i][j].y, TilE_SIZE, TilE_SIZE);
+                }
             }
         }
+        getBatch().end();
         super.draw();
     }
 
@@ -109,7 +118,7 @@ public class LevelView extends Stage implements ViewHolder {
         dialog.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (x < 0 || x > dialog.getWidth() || y < 0 || y > dialog.getHeight()) {
-                    dialog.hide();
+                    dialog.hide(null);
                 }
                 return true;
             }
@@ -117,15 +126,15 @@ public class LevelView extends Stage implements ViewHolder {
         dialog.text("Select Building:");
         for (int i : buildings.keySet()) {
             if (i == 0) continue;
-            dialog.button(buildings.get(i).name, i);
+            dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
         }
-        dialog.setPosition(TilE_SIZE * tileX, TilE_SIZE * tileY);
+        dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
         dialog.show(this);
     }
 
     @Override
-    public BuildingTile getTile(int tileX, int tileY) {
-        for (BuildingTile tile : tileList) {
+    public BuildingTileSprite getTile(int tileX, int tileY) {
+        for (BuildingTileSprite tile : tileList) {
             if (tile.getTileX() == tileX && tile.getTileY() == tileY)
                 return tile;
         }
@@ -140,7 +149,7 @@ public class LevelView extends Stage implements ViewHolder {
         } else target = buildings.get(targetRefID);
 
         TextureRegion texture = new TextureRegion(assets.getTexture("sprites/projectile.png"));
-        addActor(new Projectile(texture, x, y, TilE_SIZE/5, TilE_SIZE/5, damage, target, targetRefID, targetsEnemy));
+        addActor(new Projectile(texture, x, y, TilE_SIZE / 5, TilE_SIZE / 5, damage, target, targetRefID, targetsEnemy));
     }
 
     //да, это костыль, но вы сами не хотели обобщать врагов и башен
@@ -150,7 +159,7 @@ public class LevelView extends Stage implements ViewHolder {
 
             if (sprites.containsKey(refID)) { //update existing actor accordingly
                 sprites.get(refID).setPosition(actor.getPosition().x, actor.getPosition().y);
-                sprites.get(refID).setHealthBarPercentage((float) actor.getHealth() / (float) actor.getHealthMax());
+                sprites.get(refID).setHealthBarPercentage((float) actor.getHealth() / (float) actor.getHealthMax() * 100);
             } else { //no corresponding actor sprite exists
                 if (isEnemy)
                     addEnemySprite(actor, refID);

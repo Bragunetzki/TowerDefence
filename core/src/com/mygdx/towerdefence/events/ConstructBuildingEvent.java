@@ -22,7 +22,7 @@ public class ConstructBuildingEvent implements StateEvent {
         if (cost > state.getCurrency()) return;
 
         Building newBuilding = state.getCreator().getNewBuilding(buildingID);
-        newBuilding.setPosition(new Vector2(tileX * LevelView.TilE_SIZE, tileY * LevelView.TilE_SIZE));
+        newBuilding.setPosition( state.getMap().mapArr[tileX][tileY].x, state.getMap().mapArr[tileX][tileY].y);
         int refID = MathUtils.random(10000);
         while (state.getEnemies().containsKey(refID)) {
             refID = MathUtils.random(10000);

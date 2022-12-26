@@ -49,7 +49,7 @@ public class Enemy implements GameActor {
     public int applyDamage(int damage) {
         health -= damage;
         if (health < 0) health = 0;
-        return  health;
+        return health;
     }
 
     @Override
@@ -121,15 +121,16 @@ public class Enemy implements GameActor {
 
     private void move(float delta) {
         if (target != null) {
-            if (target.getPosition().dst(position) <= action.getRange()) //don't move if target is withing range.
+            if (target.getPosition().dst(position) <= action.getRange()) {//don't move if target is withing range.
                 return;
+            }
         }
 
+        if (moveTarget == null) return;
         if (moveTarget.dst(position) > NODE_SNAP_DISTANCE) { //move towards target node.
             Vector2 direction = moveTarget.cpy().sub(position);
             position.add(direction.nor().scl(speed).scl(delta));
-        }
-        else { //snap to target node if close enough.
+        } else { //snap to target node if close enough.
             position.set(moveTarget);
         }
     }
@@ -154,7 +155,8 @@ public class Enemy implements GameActor {
     }
 
     @Override
-    public void setPosition(Vector2 position) {
-        this.position.set(position);
+    public void setPosition(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
     }
 }

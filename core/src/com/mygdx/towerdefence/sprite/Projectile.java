@@ -34,10 +34,10 @@ public class Projectile extends GameSprite {
     }
 
     private boolean collidesWithTarget() {
-        boolean a = (getX() >= target.getOriginX() - target.getWidth() / 2);
-        boolean b = (getX() <= target.getOriginX() + target.getWidth() / 2);
-        boolean c = (getY() >= target.getOriginY() - target.getHeight() / 2);
-        boolean d = (getY() <= target.getOriginY() + target.getHeight() / 2);
+        boolean a = (getX() >= target.getX() - target.getWidth() / 2);
+        boolean c = (getY() >= target.getY() - target.getHeight() / 2);
+        boolean b = (getX() <= target.getX() + target.getWidth() / 2);
+        boolean d = (getY() <= target.getY() + target.getHeight() / 2);
         return a && b && c && d;
     }
 }

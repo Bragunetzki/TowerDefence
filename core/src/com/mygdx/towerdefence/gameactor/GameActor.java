@@ -10,7 +10,7 @@ public interface GameActor {
     int getID();
     Priority getPriority();
     Vector2 getPosition();
-    void setPosition(Vector2 position);
+    void setPosition(float x, float y);
     String getName();
     Action getAction();
     int applyDamage(int damage);

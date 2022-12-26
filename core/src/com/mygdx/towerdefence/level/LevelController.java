@@ -22,6 +22,8 @@ public class LevelController {
         Vector2 basePosition = levelConfig.baseTileCoords;
         LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y));
         pathfindingTimer = 0;
+        waveGenerator = new WaveGenerator(levelConfig);
+        waveGenerator.start();
     }
 
     public void update(float delta) {

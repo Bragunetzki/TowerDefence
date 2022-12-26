@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.config;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.level.Tile;
+import com.mygdx.towerdefence.framework.TileType;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class LevelConfig {
     public String roadTextureName;
     public List<WaveConfig> waves;
     public int startingCurrency;
-    public Tile[][] tileMap;
+    public TileType[][] tileMap;
     public Vector2 baseTileCoords;
     public Vector2 spawnerCoords;
 }
