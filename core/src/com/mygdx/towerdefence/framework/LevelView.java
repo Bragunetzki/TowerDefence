@@ -12,12 +12,10 @@ import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.config.BuildingConfig;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.LevelConfig;
-import com.mygdx.towerdefence.events.AlterCurrencyEvent;
-import com.mygdx.towerdefence.events.ConstructBuildingEvent;
-import com.mygdx.towerdefence.events.StateHolder;
-import com.mygdx.towerdefence.events.ViewHolder;
+import com.mygdx.towerdefence.events.*;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.GameActor;
+import com.mygdx.towerdefence.inputListeners.BuildingListener;
 import com.mygdx.towerdefence.level.Tile;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
@@ -105,7 +103,7 @@ public class LevelView extends Stage implements ViewHolder {
     }
 
     @Override
-    public void showBuildingDialog(final int tileX, final int tileY) {
+    public void showConstructionDialog(final int tileX, final int tileY) {
         final Map<Integer, BuildingConfig> buildings = creator.getBuildingMap();
         final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
             @Override
@@ -130,6 +128,33 @@ public class LevelView extends Stage implements ViewHolder {
             dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
         }
         dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
+        dialog.show(this, null);
+    }
+
+    @Override
+    public void showBuildingDialog(final int refID, final int ID) {
+        final Dialog dialog = new Dialog("BuildingMenu", assets.getSkin()) {
+            @Override
+            protected void result(Object object) {
+                if ((Integer) object == 0) {
+                    int demolitionReturn = creator.getBuildingConfig(ID).demolitionCurrency;
+                    LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, false));
+                    LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
+                }
+                this.hide(null);
+            }
+        };
+        dialog.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (x < 0 || x > dialog.getWidth() || y < 0 || y > dialog.getHeight()) {
+                    dialog.hide(null);
+                }
+                return true;
+            }
+        });
+        dialog.text("Choose what to do:");
+        dialog.button("Demolish!", 0);
+        dialog.setPosition(buildings.get(refID).getX(), buildings.get(refID).getY());
         dialog.show(this, null);
     }
 
@@ -201,7 +226,9 @@ public class LevelView extends Stage implements ViewHolder {
     private void addBuildingSprite(GameActor actor, int refID) {
         String textureName = creator.getBuildingConfig(actor.getID()).SpriteName;
         TextureRegion texture = new TextureRegion(assets.getBuildingTexture(textureName));
-        buildings.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f));
-        addActor(buildings.get(refID));
+        GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f);
+        building.addListener(new BuildingListener(refID, actor.getID()));
+        buildings.put(refID, building);
+        addActor(building);
     }
 }

@@ -68,7 +68,7 @@ public class LevelMapState {
         return null;
     }
 
-    private Tile positionToTile(float x, float y) {
+    public Tile positionToTile(float x, float y) {
         int gridX = (int) ((x - LevelView.GRID_CORNER_X)/LevelView.TilE_SIZE);
         int gridY = (int) ((y - LevelView.GRID_CORNER_Y)/LevelView.TilE_SIZE);
         return mapArr[gridX][gridY];

@@ -5,7 +5,9 @@ import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 public interface ViewHolder {
     void update(StateHolder state);
 
-    void showBuildingDialog(int tileX, int tileY);
+    void showConstructionDialog(int tileX, int tileY);
+
+    void showBuildingDialog(int refID, int id);
 
     BuildingTileSprite getTile(int tileX, int tileY);
 

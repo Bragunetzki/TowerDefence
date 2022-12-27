@@ -10,6 +10,6 @@ public class TileTouchedEvent implements ViewEvent {
 
     @Override
     public void execute(ViewHolder view) {
-        view.showBuildingDialog(x, y);
+        view.showConstructionDialog(x, y);
     }
 }
