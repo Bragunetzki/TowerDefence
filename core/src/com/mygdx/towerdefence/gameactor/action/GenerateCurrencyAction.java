@@ -1,8 +1,8 @@
-package com.mygdx.towerdefence.action;
+package com.mygdx.towerdefence.gameactor.action;
 
 import com.mygdx.towerdefence.events.AlterCurrencyEvent;
 import com.mygdx.towerdefence.gameactor.GameActor;
-import com.mygdx.towerdefence.screens.LevelScreen;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.screens;
+package com.mygdx.towerdefence.framework.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;

@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.priority;
+package com.mygdx.towerdefence.gameactor.priority;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.gameactor.GameActor;

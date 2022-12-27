@@ -1,10 +1,8 @@
 package com.mygdx.towerdefence.events;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.framework.LevelView;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.gameactor.Building;
-import com.mygdx.towerdefence.screens.LevelScreen;
 
 public class ConstructBuildingEvent implements StateEvent {
     int buildingID, tileX, tileY;

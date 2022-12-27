@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.events;
 
 import com.mygdx.towerdefence.config.EnemyConfig;
-import com.mygdx.towerdefence.screens.LevelScreen;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class ActorDeathEvent implements StateEvent {
     private final int refID;

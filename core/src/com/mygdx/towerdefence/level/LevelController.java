@@ -8,7 +8,7 @@ import com.mygdx.towerdefence.events.ConstructBuildingEvent;
 import com.mygdx.towerdefence.events.StateHolder;
 import com.mygdx.towerdefence.gameactor.Enemy;
 import com.mygdx.towerdefence.gameactor.GameActor;
-import com.mygdx.towerdefence.screens.LevelScreen;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.

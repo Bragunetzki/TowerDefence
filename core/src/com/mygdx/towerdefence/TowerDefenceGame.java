@@ -3,7 +3,7 @@ package com.mygdx.towerdefence;
 import com.badlogic.gdx.Game;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.framework.AssetLoader;
-import com.mygdx.towerdefence.screens.LoadingScreen;
+import com.mygdx.towerdefence.framework.screens.LoadingScreen;
 
 public class TowerDefenceGame extends Game {
     private AssetLoader assets;

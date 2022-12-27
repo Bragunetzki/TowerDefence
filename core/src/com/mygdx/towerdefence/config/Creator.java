@@ -1,11 +1,11 @@
 package com.mygdx.towerdefence.config;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.action.*;
+import com.mygdx.towerdefence.gameactor.action.*;
 import com.mygdx.towerdefence.framework.TileType;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.Enemy;
-import com.mygdx.towerdefence.priority.DefaultPriority;
+import com.mygdx.towerdefence.gameactor.priority.DefaultPriority;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +52,7 @@ public class Creator {
 
     public Action getAction(ActionType actionType, float rate, float range, Map<String, Float> params) {
         Class<?> actionClass = actionClasses.get(actionType);
-        Constructor<?> ctor = null;
+        Constructor<?> ctor;
         try {
             ctor = actionClass.getConstructor(float.class, float.class, Map.class);
             return (Action) ctor.newInstance(rate, range, params);

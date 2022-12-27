@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.screens;
+package com.mygdx.towerdefence.framework.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;

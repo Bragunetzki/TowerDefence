@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.towerdefence.framework.LevelView;
 
 public class GameActorView extends Group {
     private final TextureRegion texture;
@@ -22,7 +23,7 @@ public class GameActorView extends Group {
         healthBar.getStyle().background.setMinHeight(10);
         healthBar.getStyle().knobBefore.setMinHeight(10);
         addActor(healthBar);
-        healthBar.setPosition(0, getHeight() + getHeight() / 5);
+        healthBar.setPosition(-getWidth()/2 + LevelView.TilE_SIZE/2, getHeight()* 1.2f);
         healthBar.setAnimateDuration(100);
         healthBar.setValue(100);
     }
@@ -30,7 +31,7 @@ public class GameActorView extends Group {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (texture != null) {
-            batch.draw(texture, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+            batch.draw(texture, getX() - getWidth()/2 + LevelView.TilE_SIZE/2, getY() + LevelView.TilE_SIZE/2 - getHeight()/2, getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
         healthBar.setColor(Color.RED);
         super.draw(batch, parentAlpha);

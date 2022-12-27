@@ -1,8 +1,8 @@
 package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.action.Action;
-import com.mygdx.towerdefence.priority.Priority;
+import com.mygdx.towerdefence.gameactor.action.Action;
+import com.mygdx.towerdefence.gameactor.priority.Priority;
 
 public interface GameActor {
     int getHealth();

@@ -1,6 +1,5 @@
 package com.mygdx.towerdefence.framework;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,11 +17,10 @@ import com.mygdx.towerdefence.events.StateHolder;
 import com.mygdx.towerdefence.events.ViewHolder;
 import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.level.Tile;
-import com.mygdx.towerdefence.screens.BasicScreen;
-import com.mygdx.towerdefence.screens.LevelScreen;
+import com.mygdx.towerdefence.framework.screens.BasicScreen;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 import com.mygdx.towerdefence.sprite.GameActorView;
-import com.mygdx.towerdefence.sprite.GameSprite;
 import com.mygdx.towerdefence.sprite.Projectile;
 
 import java.util.*;
@@ -113,6 +111,7 @@ public class LevelView extends Stage implements ViewHolder {
                 int cost = buildings.get((Integer) object).cost;
                 LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent((Integer) object, tileX, tileY));
                 LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(-cost));
+                this.hide(null);
             }
         };
         dialog.addListener(new InputListener() {
@@ -129,7 +128,7 @@ public class LevelView extends Stage implements ViewHolder {
             dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
         }
         dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
-        dialog.show(this);
+        dialog.show(this, null);
     }
 
     @Override

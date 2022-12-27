@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.screens;
+package com.mygdx.towerdefence.framework.screens;
 
 import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.events.EventQueue;

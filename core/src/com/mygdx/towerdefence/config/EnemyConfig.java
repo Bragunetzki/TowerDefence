@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.config;
 
-import com.mygdx.towerdefence.action.ActionType;
-import com.mygdx.towerdefence.priority.Priority;
+import com.mygdx.towerdefence.gameactor.action.ActionType;
+import com.mygdx.towerdefence.gameactor.priority.Priority;
 
 import java.util.Map;
 

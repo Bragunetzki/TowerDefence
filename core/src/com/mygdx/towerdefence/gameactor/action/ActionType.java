@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.action;
+package com.mygdx.towerdefence.gameactor.action;
 
 public enum ActionType {
     Default,
