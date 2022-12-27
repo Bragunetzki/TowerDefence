@@ -1,5 +1,6 @@
 package com.mygdx.towerdefence.framework;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,6 +16,7 @@ import com.mygdx.towerdefence.events.AlterCurrencyEvent;
 import com.mygdx.towerdefence.events.ConstructBuildingEvent;
 import com.mygdx.towerdefence.events.StateHolder;
 import com.mygdx.towerdefence.events.ViewHolder;
+import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.level.Tile;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
@@ -159,6 +161,15 @@ public class LevelView extends Stage implements ViewHolder {
             if (sprites.containsKey(refID)) { //update existing actor accordingly
                 sprites.get(refID).setPosition(actor.getPosition().x, actor.getPosition().y);
                 sprites.get(refID).setHealthBarPercentage((float) actor.getHealth() / (float) actor.getHealthMax() * 100);
+                if (!isEnemy) {
+                    Building building = (Building) actor;
+                    if (!building.isConstructed()) {
+                        sprites.get(refID).setColor(Color.ORANGE);
+                    }
+                    else {
+                        sprites.get(refID).setColor(Color.WHITE);
+                    }
+                }
             } else { //no corresponding actor sprite exists
                 if (isEnemy)
                     addEnemySprite(actor, refID);

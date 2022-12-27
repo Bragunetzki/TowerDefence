@@ -199,7 +199,7 @@ public class Creator {
         level.baseTileCoords = new Vector2(8, 4);
         level.waves = new LinkedList<>();
         WaveConfig wave = new WaveConfig();
-        wave.enemyCount = 3;
+        wave.enemyCount = 5;
         wave.waveDelay = 20;
         wave.enemyInterval = 4;
         wave.enemyTypes = new LinkedList<>();

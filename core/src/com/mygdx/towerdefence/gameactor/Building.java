@@ -2,8 +2,8 @@ package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
-import com.mygdx.towerdefence.gameactor.action.Action;
 import com.mygdx.towerdefence.config.BuildingConfig;
+import com.mygdx.towerdefence.gameactor.action.Action;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
 
 public class Building implements GameActor, Pool.Poolable {
@@ -17,10 +17,13 @@ public class Building implements GameActor, Pool.Poolable {
     private final int demolitionCurrency;
     private boolean isActive;
     private float actionTimer;
-    private float buildTimer;
     private GameActor target;
     private final ActorType actorType;
     private int refID;
+    private int buildHealthRate;
+    private float buildTimer;
+    private float buildTimerStepCurrent;
+    private static final float buildTimerStep = 0.5f;
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -37,11 +40,18 @@ public class Building implements GameActor, Pool.Poolable {
         actorType = ActorType.Building;
 
         if (id != 0)
-            buildTimer = 5;
+            startConstruction();
     }
 
     public Building(BuildingConfig config, Action action) {
         this(config, action, Vector2.Zero);
+    }
+
+    private void startConstruction() {
+        buildTimer = 5;
+        buildTimerStepCurrent = buildTimerStep;
+        health = 1;
+        buildHealthRate = maxHealth / Math.round(buildTimer / buildTimerStep);
     }
 
     public int applyDamage(int damage) {
@@ -104,6 +114,14 @@ public class Building implements GameActor, Pool.Poolable {
     public void act(float delta) {
         if (buildTimer > 0) {
             buildTimer -= delta;
+            buildTimerStepCurrent -= delta;
+            if (buildTimerStepCurrent <= 0) {
+                health += buildHealthRate;
+                buildTimerStepCurrent = buildTimerStep;
+            }
+            if (buildTimer <= 0) {
+                health = maxHealth;
+            }
             return;
         }
 
@@ -113,6 +131,10 @@ public class Building implements GameActor, Pool.Poolable {
             if (action.call(this, delta, target))
                 actionTimer = action.getRate();
         }
+    }
+
+    public boolean isConstructed() {
+        return (buildTimer <= 0);
     }
 
     @Override

@@ -30,6 +30,7 @@ public class GameActorView extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor());
         if (texture != null) {
             batch.draw(texture, getX() - getWidth()/2 + LevelView.TilE_SIZE/2, getY() + LevelView.TilE_SIZE/2 - getHeight()/2, getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
         }
