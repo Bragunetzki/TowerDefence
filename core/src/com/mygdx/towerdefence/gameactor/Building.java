@@ -119,6 +119,10 @@ public class Building implements GameActor, Pool.Poolable {
                 health += buildHealthRate;
                 buildTimerStepCurrent = buildTimerStep;
             }
+            if (buildTimer <= 0) {
+                health += buildHealthRate;
+                if (health > maxHealth) health = maxHealth;
+            }
             return;
         }
 

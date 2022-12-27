@@ -227,7 +227,7 @@ public class LevelView extends Stage implements ViewHolder {
         String textureName = creator.getBuildingConfig(actor.getID()).SpriteName;
         TextureRegion texture = new TextureRegion(assets.getBuildingTexture(textureName));
         GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f);
-        building.addListener(new BuildingListener(refID, actor.getID()));
+        if (actor.getID() != 0) building.addListener(new BuildingListener(refID, actor.getID()));
         buildings.put(refID, building);
         addActor(building);
     }
