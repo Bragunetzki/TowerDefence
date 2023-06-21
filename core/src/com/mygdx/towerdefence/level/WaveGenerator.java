@@ -44,7 +44,6 @@ public class WaveGenerator {
             enemyTimer -= delta;
         } else {
             waveTimer -= delta;
-
         }
 
         if (enemyTimer <= 0 && isWaveActive) {
@@ -70,6 +69,9 @@ public class WaveGenerator {
     }
 
     public float getWaveTimer() {
-        return waveTimer;
+        if (isWaveActive)
+            return enemyTimer;
+        else
+            return waveTimer;
     }
 }
