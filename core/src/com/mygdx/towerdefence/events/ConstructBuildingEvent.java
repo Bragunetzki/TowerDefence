@@ -3,14 +3,20 @@ package com.mygdx.towerdefence.events;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.gameactor.Building;
+import com.mygdx.towerdefence.level.Tile;
 
 public class ConstructBuildingEvent implements StateEvent {
-    int buildingID, tileX, tileY;
+    int buildingID, tileX, tileY, refID;
 
-    public ConstructBuildingEvent(int buildingID, int tileX, int tileY) {
+    public ConstructBuildingEvent(int buildingID, int tileX, int tileY, int refID) {
         this.buildingID = buildingID;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.refID = refID;
+    }
+
+    public ConstructBuildingEvent(int buildingID, int tileX, int tileY) {
+        this(buildingID, tileX, tileY, -1);
     }
 
     @Override
@@ -20,13 +26,21 @@ public class ConstructBuildingEvent implements StateEvent {
         if (cost > state.getCurrency()) return;
 
         Building newBuilding = state.getCreator().getNewBuilding(buildingID);
-        newBuilding.setPosition( state.getMap().mapArr[tileX][tileY].x, state.getMap().mapArr[tileX][tileY].y);
-        int refID = MathUtils.random(10000);
-        while (state.getEnemies().containsKey(refID)) {
-            refID = MathUtils.random(10000);
+        Tile targetTile = state.getMap().mapArr[tileX][tileY];
+        newBuilding.setPosition( targetTile.x, targetTile.y);
+
+        if (refID == -1) {
+            int refID = MathUtils.random(10000);
+            while (state.getEnemies().containsKey(refID)) {
+                refID = MathUtils.random(10000);
+            }
+            newBuilding.setRefID(refID);
+            state.getBuildings().put(refID, newBuilding);
         }
-        newBuilding.setRefID(refID);
-        state.getBuildings().put(refID, newBuilding);
+        else {
+            newBuilding.setRefID(refID);
+            state.getBuildings().put(refID, newBuilding);
+        }
         LevelScreen.eventQueue.addViewEvent(new ConstructBuildingViewEvent(tileX, tileY));
     }
 }

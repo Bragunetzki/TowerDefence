@@ -1,20 +1,18 @@
 package com.mygdx.towerdefence.events;
 
-import com.badlogic.gdx.utils.Pool;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.SynchronousQueue;
 
 public class EventQueue {
-    private final Queue<StateEvent> stateEvents;
-    private final Queue<ViewEvent> viewEvents;
+    private final SynchronousQueue<StateEvent> stateEvents;
+    private final SynchronousQueue<ViewEvent> viewEvents;
     private final List<StateHolder> stateSubscribers;
     private final List<ViewHolder> viewSubscribers;
 
     public EventQueue() {
-        stateEvents = new LinkedList<>();
-        viewEvents = new LinkedList<>();
+        stateEvents = new SynchronousQueue<>();
+        viewEvents = new SynchronousQueue<>();
         stateSubscribers = new LinkedList<>();
         viewSubscribers = new LinkedList<>();
     }

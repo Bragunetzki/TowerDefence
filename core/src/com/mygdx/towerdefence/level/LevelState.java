@@ -56,6 +56,11 @@ public class LevelState implements StateHolder {
     }
 
     @Override
+    public void setCurrency(int currency) {
+        this.inLevelCurrency = currency;
+    }
+
+    @Override
     public Creator getCreator() {
         return creator;
     }

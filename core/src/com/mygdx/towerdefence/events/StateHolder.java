@@ -12,5 +12,6 @@ public interface StateHolder {
     LevelMapState getMap();
     int getCurrency();
     void addCurrency(int currency);
+    void setCurrency(int currency);
     Creator getCreator();
 }
