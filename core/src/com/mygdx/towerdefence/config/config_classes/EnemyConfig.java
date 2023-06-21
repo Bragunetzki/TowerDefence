@@ -1,22 +1,20 @@
-package com.mygdx.towerdefence.config;
+package com.mygdx.towerdefence.config.config_classes;
 
 import com.mygdx.towerdefence.gameactor.action.ActionType;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
 
-import java.util.List;
 import java.util.Map;
 
-public class BuildingConfig {
+public class EnemyConfig {
     public int id;
     public int maxHealth;
+    public int reward;
     public Priority priority;
-    public int cost;
+    public float speed;
     public String name;
-    public String SpriteName;
-    public int demolitionCurrency;
-    public List<Integer> upgradeIDs;
+    public String spriteName;
     public float actionRate;
-    public ActionType actionType;
     public float actionRange;
+    public ActionType actionType;
     public Map<String, Float> actionParams;
 }

@@ -2,7 +2,7 @@ package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.gameactor.action.Action;
-import com.mygdx.towerdefence.config.EnemyConfig;
+import com.mygdx.towerdefence.config.config_classes.EnemyConfig;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
 
 public class Enemy implements GameActor {

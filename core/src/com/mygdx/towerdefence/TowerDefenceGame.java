@@ -4,16 +4,20 @@ import com.badlogic.gdx.Game;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.framework.AssetLoader;
 import com.mygdx.towerdefence.framework.screens.LoadingScreen;
+import com.mygdx.towerdefence.game_state.GameState;
+import com.mygdx.towerdefence.game_state.GameStateCreator;
 
 public class TowerDefenceGame extends Game {
     private AssetLoader assets;
+    private GameState gameState;
     private Creator creator;
 
     @Override
     public void create() {
         assets = new AssetLoader();
         assets.loadAll();
-        creator = new Creator();
+        creator = new GameStateCreator();
+        gameState = new GameState(this);
         this.setScreen(new LoadingScreen(this));
     }
 
@@ -34,5 +38,9 @@ public class TowerDefenceGame extends Game {
 
     public Creator getCreator() {
         return creator;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }

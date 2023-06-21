@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.events;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.config.EnemyConfig;
+import com.mygdx.towerdefence.config.config_classes.EnemyConfig;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.level.Tile;
 

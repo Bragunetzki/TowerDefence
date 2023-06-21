@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.towerdefence.TowerDefenceGame;
-import com.mygdx.towerdefence.config.BuildingConfig;
+import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.Creator;
-import com.mygdx.towerdefence.config.LevelConfig;
+import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.events.*;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.GameActor;
@@ -222,14 +222,14 @@ public class LevelView extends Stage implements ViewHolder {
     }
 
     private void addEnemySprite(GameActor actor, int refID) {
-        String textureName = creator.getEnemyConfig(actor.getID()).SpriteName;
+        String textureName = creator.getEnemyConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getEnemyTexture(textureName));
         enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.5f, TilE_SIZE * 0.5f));
         addActor(enemies.get(refID));
     }
 
     private void addBuildingSprite(GameActor actor, int refID) {
-        String textureName = creator.getBuildingConfig(actor.getID()).SpriteName;
+        String textureName = creator.getBuildingConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getBuildingTexture(textureName));
         GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f);
         if (actor.getID() != 0) building.addListener(new BuildingListener(refID, actor.getID()));

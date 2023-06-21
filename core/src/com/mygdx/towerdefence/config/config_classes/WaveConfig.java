@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.config;
+package com.mygdx.towerdefence.config.config_classes;
 
 import java.util.List;
 
