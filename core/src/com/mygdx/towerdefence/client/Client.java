@@ -24,7 +24,6 @@ public class Client {
     private BufferedReader in;
     private OutputStreamWriter out;
     private final JsonReader jsonReader;
-    private int userID;
 
     public Client(String addr, int port) {
         this.addr = addr;
@@ -39,6 +38,7 @@ public class Client {
         commandMap.put("constructBuilding", new ConstructBuildingCommand());
         commandMap.put("damageActor", new DamageActorCommand());
         commandMap.put("moneyChanged", new MoneyChangedCommand());
+        commandMap.put("endGame", new EndGameCommand());
         jsonReader = new JsonReader();
     }
 

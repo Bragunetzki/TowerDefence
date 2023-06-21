@@ -57,5 +57,7 @@ public class EventQueue {
     public void clearAll() {
         stateEvents.clear();
         viewEvents.clear();
+        viewSubscribers.clear();
+        stateSubscribers.clear();
     }
 }

@@ -16,10 +16,10 @@ public class GameActorView extends Group {
     public GameActorView(TextureRegion texture, Skin skin, float x, float y, float width, float height) {
         this.texture = texture;
         setSize(width, height);
-        setOrigin(width/2, height/2);
+        //setOrigin(width/2, height/2);
         setPosition(x, y);
         healthBar = new ProgressBar(0, 100, 1, false, skin, "default-horizontal");
-        healthBar.setSize(width, width / 5);
+        healthBar.setSize(width, width / 4);
         healthBar.getStyle().background.setMinHeight(10);
         healthBar.getStyle().knobBefore.setMinHeight(10);
         addActor(healthBar);

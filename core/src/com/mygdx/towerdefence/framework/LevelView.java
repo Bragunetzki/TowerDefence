@@ -43,9 +43,12 @@ public class LevelView extends Stage implements ViewHolder {
     private final Label currencyLabel;
     private final Label timerLabel;
     private final TowerDefenceGame game;
+    private final Texture backgroundTexture;
+    private final int levelID;
 
     public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
         super(screen.getViewport());
+        this.levelID = levelID;
         enemies = new HashMap<>();
         buildings = new HashMap<>();
         this.game = game;
@@ -61,7 +64,7 @@ public class LevelView extends Stage implements ViewHolder {
         addActor(timerLabel);
         this.map = map;
 
-        Texture backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
+        backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
         Texture roadTexture = assets.getTexture(levelConfig.roadTextureName);
 
@@ -99,7 +102,12 @@ public class LevelView extends Stage implements ViewHolder {
     private void drawMap() {
         for (int i = 0; i < mapTextures.length; i++) {
             for (int j = 0; j < mapTextures[0].length; j++) {
-                if (mapTextures[i][j] != null) {
+                this.getBatch().draw(backgroundTexture, map[i][j].x, map[i][j].y, TilE_SIZE, TilE_SIZE);
+            }
+        }
+        for (int i = 0; i < mapTextures.length; i++) {
+            for (int j = 0; j < mapTextures[0].length; j++) {
+                if (mapTextures[i][j] != null && mapTextures[i][j] != backgroundTexture) {
                     this.getBatch().draw(mapTextures[i][j], map[i][j].x, map[i][j].y, TilE_SIZE, TilE_SIZE);
                 }
             }
@@ -120,9 +128,7 @@ public class LevelView extends Stage implements ViewHolder {
         final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
             @Override
             protected void result(Object object) {
-                int cost = buildings.get((Integer) object).cost;
                 LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent((Integer) object, tileX, tileY));
-                LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(-cost));
                 this.hide(null);
             }
         };
@@ -150,7 +156,7 @@ public class LevelView extends Stage implements ViewHolder {
             protected void result(Object object) {
                 game.getGameState().alterInGameCurrency(reward);
                 if (victory)
-                    game.getGameState().setLevelsPassed(1);
+                    game.getGameState().setLevelsPassed(levelID + 1);
                 LevelScreen.eventQueue.clearAll();
                 game.getScreen().dispose();
                 game.setScreen(new LevelSelectionScreen(game));

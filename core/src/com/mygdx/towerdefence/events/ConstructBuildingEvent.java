@@ -22,12 +22,12 @@ public class ConstructBuildingEvent implements StateEvent {
     @Override
     public void execute(StateHolder state) {
         int cost = state.getCreator().getBuildingConfig(buildingID).cost;
-
         if (cost > state.getCurrency()) return;
 
         Building newBuilding = state.getCreator().getNewBuilding(buildingID);
         Tile targetTile = state.getMap().mapArr[tileX][tileY];
         newBuilding.setPosition( targetTile.x, targetTile.y);
+        LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(-cost));
 
         if (refID == -1) {
             int refID = MathUtils.random(10000);
