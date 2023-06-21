@@ -3,6 +3,7 @@ package com.mygdx.towerdefence.framework.screens;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.mygdx.towerdefence.TowerDefenceGame;
+import com.mygdx.towerdefence.menu.MainMenuScreen;
 
 public class LoadingScreen extends BasicScreen {
     private final ProgressBar bar;
@@ -22,7 +23,8 @@ public class LoadingScreen extends BasicScreen {
     @Override
     public void render(float delta) {
         if (game.getAssetLoader().isLoaded()) {
-            game.setScreen(new LevelScreen(game, 0));
+            //game.setScreen(new LevelScreen(game, 0));
+            game.setScreen(new MainMenuScreen(game));
         } else {
             super.render(delta);
             bar.setValue(game.getAssetLoader().progress() * 100);

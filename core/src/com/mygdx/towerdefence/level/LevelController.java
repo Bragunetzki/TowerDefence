@@ -2,7 +2,7 @@ package com.mygdx.towerdefence.level;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.Creator;
-import com.mygdx.towerdefence.config.LevelConfig;
+import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.events.ActorDeathEvent;
 import com.mygdx.towerdefence.events.ConstructBuildingEvent;
 import com.mygdx.towerdefence.events.StateHolder;

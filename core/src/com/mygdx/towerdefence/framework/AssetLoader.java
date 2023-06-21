@@ -28,10 +28,22 @@ public class AssetLoader {
         assets.load("road.png", Texture.class);
         assets.load("plot.png", Texture.class);
         assets.load("sprites/projectile.png", Texture.class);
+        assets.load("line.png", Texture.class);
     }
 
     public BitmapFont getFont() {
-        return font;
+        return new BitmapFont(
+                Gdx.files.internal("styles/font-export.fnt"),
+                skin.getAtlas().findRegion("font-export")
+        );
+    }
+
+
+    public BitmapFont getTitleFont() {
+        return new BitmapFont(
+                Gdx.files.internal("styles/font-title-export.fnt"),
+                skin.getAtlas().findRegion("font-title-export")
+        );
     }
 
     public Texture getTexture(String filename) {
