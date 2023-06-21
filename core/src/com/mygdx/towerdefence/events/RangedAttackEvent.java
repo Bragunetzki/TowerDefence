@@ -16,6 +16,6 @@ public class RangedAttackEvent implements ViewEvent {
 
     @Override
     public void execute(ViewHolder view) {
-        view.addProjectile(0, x, y, targetRefID, targetsEnemy);
+        view.addProjectile(damage, x, y, targetRefID, targetsEnemy);
     }
 }

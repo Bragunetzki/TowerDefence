@@ -27,7 +27,7 @@ public class BasicAttackAction extends DoNothingAction {
 
         if (target.getPosition().dst(caller.getPosition()) <= range) {
             if (range <= LevelView.TilE_SIZE / 2)
-                LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(target.getRefID(), damage, targetsEnemy));
+                LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(damage, target.getRefID(), targetsEnemy));
             else
                 LevelScreen.eventQueue.addViewEvent(new RangedAttackEvent(damage, caller.getPosition().x, caller.getPosition().y, target.getRefID(), targetsEnemy));
             return true;

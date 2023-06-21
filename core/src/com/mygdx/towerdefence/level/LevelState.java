@@ -19,8 +19,9 @@ public class LevelState implements StateHolder {
 
     public final float mapCornerX;
     public final float mapCornerY;
+    private final WaveGenerator waveGenerator;
 
-    public LevelState(Creator creator, LevelConfig config) {
+    public LevelState(Creator creator, LevelConfig config, WaveGenerator waveGenerator) {
         inLevelCurrency = config.startingCurrency;
         activeBuildings = new HashMap<>();
         activeEnemies = new HashMap<>();
@@ -28,6 +29,7 @@ public class LevelState implements StateHolder {
         mapCornerX = (WORLD_SIZE_X - (config.tileMap.length * TilE_SIZE)) / 2;
         mapCornerY = (WORLD_SIZE_Y - (config.tileMap[0].length * TilE_SIZE)) / 2;
         this.creator = creator;
+        this.waveGenerator = waveGenerator;
     }
 
     @Override
@@ -63,5 +65,9 @@ public class LevelState implements StateHolder {
     @Override
     public Creator getCreator() {
         return creator;
+    }
+
+    public WaveGenerator getWaveGenerator() {
+        return waveGenerator;
     }
 }

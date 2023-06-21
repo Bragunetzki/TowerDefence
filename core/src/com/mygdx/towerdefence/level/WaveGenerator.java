@@ -68,4 +68,8 @@ public class WaveGenerator {
             enemyTimer = activeWave.enemyInterval;
         }
     }
+
+    public float getWaveTimer() {
+        return waveTimer;
+    }
 }

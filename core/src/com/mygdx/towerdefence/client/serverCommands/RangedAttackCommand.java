@@ -11,8 +11,7 @@ public class RangedAttackCommand implements ServerCommand {
         float y = msg.getFloat("y");
         int targetRefID = msg.getInt("targetRefID");
         boolean isAttackerEnemy = msg.getBoolean("isAttackerEnemy");
-        int damage = msg.getInt("damage");
 
-        LevelScreen.eventQueue.addViewEvent(new RangedAttackEvent(damage, x, y, targetRefID, !isAttackerEnemy));
+        LevelScreen.eventQueue.addViewEvent(new RangedAttackEvent(0, x, y, targetRefID, !isAttackerEnemy));
     }
 }
