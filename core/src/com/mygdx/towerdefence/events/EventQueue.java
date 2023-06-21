@@ -2,17 +2,17 @@ package com.mygdx.towerdefence.events;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class EventQueue {
-    private final SynchronousQueue<StateEvent> stateEvents;
-    private final SynchronousQueue<ViewEvent> viewEvents;
+    private final LinkedBlockingQueue<StateEvent> stateEvents;
+    private final LinkedBlockingQueue<ViewEvent> viewEvents;
     private final List<StateHolder> stateSubscribers;
     private final List<ViewHolder> viewSubscribers;
 
     public EventQueue() {
-        stateEvents = new SynchronousQueue<>();
-        viewEvents = new SynchronousQueue<>();
+        stateEvents = new LinkedBlockingQueue<>();
+        viewEvents = new LinkedBlockingQueue<>();
         stateSubscribers = new LinkedList<>();
         viewSubscribers = new LinkedList<>();
     }
