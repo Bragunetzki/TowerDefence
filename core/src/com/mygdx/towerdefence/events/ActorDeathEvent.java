@@ -21,10 +21,14 @@ public class ActorDeathEvent implements StateEvent {
             LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(config.reward));
             state.getEnemies().remove(refID);
         } else {
+            int id = state.getBuildings().get(refID).getID();
             Vector2 pos = state.getBuildings().get(refID).getPosition();
             Tile tile = state.getMap().positionToTile(pos.x, pos.y);
             state.getBuildings().remove(refID);
             LevelScreen.eventQueue.addViewEvent(new BuildingDestroyedViewEvent(tile.gridX, tile.gridY));
+            if (id == 0) {
+                LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(false, 0));
+            }
         }
     }
 }

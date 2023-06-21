@@ -9,16 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.towerdefence.TowerDefenceGame;
-import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.Creator;
+import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.events.*;
+import com.mygdx.towerdefence.framework.screens.BasicScreen;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.inputListeners.BuildingListener;
 import com.mygdx.towerdefence.level.Tile;
-import com.mygdx.towerdefence.framework.screens.BasicScreen;
-import com.mygdx.towerdefence.framework.screens.LevelScreen;
+import com.mygdx.towerdefence.menu.LevelSelectionScreen;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 import com.mygdx.towerdefence.sprite.GameActorView;
 import com.mygdx.towerdefence.sprite.Projectile;
@@ -41,11 +42,13 @@ public class LevelView extends Stage implements ViewHolder {
     private final List<BuildingTileSprite> tileList;
     private final Label currencyLabel;
     private final Label timerLabel;
+    private final TowerDefenceGame game;
 
     public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
         super(screen.getViewport());
         enemies = new HashMap<>();
         buildings = new HashMap<>();
+        this.game = game;
         assets = game.getAssetLoader();
         creator = game.getCreator();
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
@@ -72,7 +75,7 @@ public class LevelView extends Stage implements ViewHolder {
                         break;
                     case Plot:
                         BuildingTileSprite tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE);
-                        tile.setPosition( map[i][j].x, map[i][j].y);
+                        tile.setPosition(map[i][j].x, map[i][j].y);
                         addActor(tile);
                         tileList.add(tile);
                         mapTextures[i][j] = null;
@@ -88,15 +91,19 @@ public class LevelView extends Stage implements ViewHolder {
     @Override
     public void draw() {
         getBatch().begin();
+        drawMap();
+        getBatch().end();
+        super.draw();
+    }
+
+    private void drawMap() {
         for (int i = 0; i < mapTextures.length; i++) {
             for (int j = 0; j < mapTextures[0].length; j++) {
                 if (mapTextures[i][j] != null) {
-                    this.getBatch().draw(mapTextures[i][j], map[i][j].x,  map[i][j].y, TilE_SIZE, TilE_SIZE);
+                    this.getBatch().draw(mapTextures[i][j], map[i][j].x, map[i][j].y, TilE_SIZE, TilE_SIZE);
                 }
             }
         }
-        getBatch().end();
-        super.draw();
     }
 
     @Override
@@ -133,6 +140,35 @@ public class LevelView extends Stage implements ViewHolder {
             dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
         }
         dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
+        dialog.show(this, null);
+    }
+
+    @Override
+    public void showEndDialog(final boolean victory, final int reward) {
+        final Dialog dialog = new Dialog("Game Over", assets.getSkin()) {
+            @Override
+            protected void result(Object object) {
+                game.getGameState().alterInGameCurrency(reward);
+                if (victory)
+                    game.getGameState().setLevelsPassed(1);
+                LevelScreen.eventQueue.clearAll();
+                game.getScreen().dispose();
+                game.setScreen(new LevelSelectionScreen(game));
+                this.hide(null);
+            }
+        };
+        if (victory) {
+            dialog.text("You Win!");
+        } else {
+            dialog.text("You Lost!");
+        }
+        dialog.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+        dialog.button("Ok", 0);
+        dialog.setPosition(LevelScreen.WORLD_SIZE_X / 2 - dialog.getWidth(), LevelScreen.WORLD_SIZE_Y / 2 - dialog.getHeight());
         dialog.show(this, null);
     }
 
@@ -183,6 +219,7 @@ public class LevelView extends Stage implements ViewHolder {
         addActor(new Projectile(texture, x, y, TilE_SIZE / 5, TilE_SIZE / 5, damage, target, targetRefID, targetsEnemy));
     }
 
+
     //да, это костыль, но вы сами не хотели обобщать врагов и башен
     private void syncActors(Map<Integer, GameActorView> sprites, Map<Integer, GameActor> actors, boolean isEnemy) {
         for (int refID : actors.keySet()) {
@@ -195,8 +232,7 @@ public class LevelView extends Stage implements ViewHolder {
                     Building building = (Building) actor;
                     if (!building.isConstructed()) {
                         sprites.get(refID).setColor(Color.ORANGE);
-                    }
-                    else {
+                    } else {
                         sprites.get(refID).setColor(Color.WHITE);
                     }
                 }

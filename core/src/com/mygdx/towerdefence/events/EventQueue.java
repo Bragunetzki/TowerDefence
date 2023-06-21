@@ -53,4 +53,9 @@ public class EventQueue {
             event.execute(state);
         }
     }
+
+    public void clearAll() {
+        stateEvents.clear();
+        viewEvents.clear();
+    }
 }

@@ -21,6 +21,8 @@ public class LevelState implements StateHolder {
     public final float mapCornerY;
     private final WaveGenerator waveGenerator;
 
+    private boolean lastEnemySpawned;
+
     public LevelState(Creator creator, LevelConfig config, WaveGenerator waveGenerator) {
         inLevelCurrency = config.startingCurrency;
         activeBuildings = new HashMap<>();
@@ -30,6 +32,7 @@ public class LevelState implements StateHolder {
         mapCornerY = (WORLD_SIZE_Y - (config.tileMap[0].length * TilE_SIZE)) / 2;
         this.creator = creator;
         this.waveGenerator = waveGenerator;
+        lastEnemySpawned = false;
     }
 
     @Override
@@ -69,5 +72,15 @@ public class LevelState implements StateHolder {
 
     public WaveGenerator getWaveGenerator() {
         return waveGenerator;
+    }
+
+    @Override
+    public void markLastEnemySpawn() {
+        lastEnemySpawned = true;
+    }
+
+    @Override
+    public boolean isLastEnemySpawned() {
+        return lastEnemySpawned;
     }
 }

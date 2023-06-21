@@ -14,7 +14,6 @@ public class Building implements GameActor, Pool.Poolable {
     private final Vector2 position;
     private final String name;
     private final Action action;
-    private final int demolitionCurrency;
     private boolean isActive;
     private float actionTimer;
     private GameActor target;
@@ -32,7 +31,6 @@ public class Building implements GameActor, Pool.Poolable {
         this.priority = config.priority;
         this.name = config.name;
         this.action = action;
-        this.demolitionCurrency = config.demolitionCurrency;
         this.position = new Vector2(position);
         isActive = true;
         actionTimer = action.getRate();

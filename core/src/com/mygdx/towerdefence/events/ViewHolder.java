@@ -12,4 +12,6 @@ public interface ViewHolder {
     BuildingTileSprite getTile(int tileX, int tileY);
 
     void addProjectile(int damage, float x, float y, int targetRefID, boolean targetsEnemy);
+
+    void showEndDialog(boolean victory, int reward);
 }

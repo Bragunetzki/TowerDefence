@@ -16,4 +16,8 @@ public interface StateHolder {
     void setCurrency(int currency);
     Creator getCreator();
     WaveGenerator getWaveGenerator();
+
+    void markLastEnemySpawn();
+
+    boolean isLastEnemySpawned();
 }

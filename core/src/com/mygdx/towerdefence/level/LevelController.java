@@ -5,6 +5,7 @@ import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.events.ActorDeathEvent;
 import com.mygdx.towerdefence.events.ConstructBuildingEvent;
+import com.mygdx.towerdefence.events.LevelEndEvent;
 import com.mygdx.towerdefence.events.StateHolder;
 import com.mygdx.towerdefence.gameactor.Enemy;
 import com.mygdx.towerdefence.gameactor.GameActor;
@@ -15,18 +16,25 @@ public class LevelController {
     private final StateHolder levelState;
     private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
+    private boolean isActive;
 
     public LevelController(Creator creator, int levelID) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         Vector2 basePosition = levelConfig.baseTileCoords;
-        LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y));
+        LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
         pathfindingTimer = 0;
         waveGenerator = new WaveGenerator(levelConfig);
         waveGenerator.start();
         levelState = new LevelState(creator, levelConfig, waveGenerator);
+        isActive = true;
     }
 
     public void update(float delta) {
+        if (!isActive) return;
+        if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
+            LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+            isActive = false;
+        }
         waveGenerator.update(delta);
 
         for (int key : levelState.getBuildings().keySet()) {
