@@ -1,5 +1,6 @@
 package com.mygdx.towerdefence.gameactor.action;
 
+import com.mygdx.towerdefence.events.DamageActorEvent;
 import com.mygdx.towerdefence.events.RangedAttackEvent;
 import com.mygdx.towerdefence.framework.LevelView;
 import com.mygdx.towerdefence.gameactor.ActorType;
@@ -26,7 +27,7 @@ public class BasicAttackAction extends DoNothingAction {
 
         if (target.getPosition().dst(caller.getPosition()) <= range) {
             if (range <= LevelView.TilE_SIZE / 2)
-                target.applyDamage(damage);
+                LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(damage, target.getRefID(), targetsEnemy));
             else
                 LevelScreen.eventQueue.addViewEvent(new RangedAttackEvent(damage, caller.getPosition().x, caller.getPosition().y, target.getRefID(), targetsEnemy));
             return true;

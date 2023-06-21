@@ -3,6 +3,7 @@ package com.mygdx.towerdefence.events;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.level.LevelMapState;
+import com.mygdx.towerdefence.level.WaveGenerator;
 
 import java.util.Map;
 
@@ -12,5 +13,7 @@ public interface StateHolder {
     LevelMapState getMap();
     int getCurrency();
     void addCurrency(int currency);
+    void setCurrency(int currency);
     Creator getCreator();
+    WaveGenerator getWaveGenerator();
 }

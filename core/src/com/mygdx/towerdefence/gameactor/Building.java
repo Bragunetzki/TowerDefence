@@ -11,7 +11,7 @@ public class Building implements GameActor, Pool.Poolable {
     private int health;
     private final int maxHealth;
     private final Priority priority;
-    private Vector2 position;
+    private final Vector2 position;
     private final String name;
     private final Action action;
     private final int demolitionCurrency;
@@ -104,10 +104,6 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public void reset() {
         this.health = maxHealth;
-    }
-
-    public int getDemolitionCurrency() {
-        return demolitionCurrency;
     }
 
     @Override

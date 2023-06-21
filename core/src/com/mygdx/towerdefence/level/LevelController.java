@@ -13,17 +13,17 @@ import com.mygdx.towerdefence.framework.screens.LevelScreen;
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
     private final StateHolder levelState;
-    private WaveGenerator waveGenerator;
+    private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
 
     public LevelController(Creator creator, int levelID) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
-        levelState = new LevelState(creator, levelConfig);
         Vector2 basePosition = levelConfig.baseTileCoords;
         LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y));
         pathfindingTimer = 0;
         waveGenerator = new WaveGenerator(levelConfig);
         waveGenerator.start();
+        levelState = new LevelState(creator, levelConfig, waveGenerator);
     }
 
     public void update(float delta) {

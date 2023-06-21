@@ -40,6 +40,7 @@ public class LevelView extends Stage implements ViewHolder {
     private final Tile[][] map;
     private final List<BuildingTileSprite> tileList;
     private final Label currencyLabel;
+    private final Label timerLabel;
 
     public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
         super(screen.getViewport());
@@ -51,7 +52,10 @@ public class LevelView extends Stage implements ViewHolder {
         tileList = new LinkedList<>();
         currencyLabel = new Label("0", assets.getSkin());
         currencyLabel.setPosition(50, 30);
+        timerLabel = new Label("100", assets.getSkin());
+        timerLabel.setPosition(50, WORLD_SIZE_Y * 0.95f);
         addActor(currencyLabel);
+        addActor(timerLabel);
         this.map = map;
 
         Texture backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
@@ -100,6 +104,7 @@ public class LevelView extends Stage implements ViewHolder {
         syncActors(enemies, state.getEnemies(), true);
         syncActors(buildings, state.getBuildings(), false);
         currencyLabel.setText(state.getCurrency());
+        timerLabel.setText((int) state.getWaveGenerator().getWaveTimer());
     }
 
     @Override
