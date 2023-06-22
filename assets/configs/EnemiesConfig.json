@@ -2,7 +2,7 @@
   {
     "id": 0,
     "name": "Boar Warrior",
-    "maxHealth": 15,
+    "maxHealth": 30,
     "reward": 5,
     "spriteName": "boar.png",
     "speed": 100,
@@ -16,7 +16,7 @@
   {
     "id": 1,
     "name": "Boar Ranger",
-    "maxHealth": 10,
+    "maxHealth": 20,
     "reward": 5,
     "spriteName": "boarRanger.png",
     "speed": 150,
