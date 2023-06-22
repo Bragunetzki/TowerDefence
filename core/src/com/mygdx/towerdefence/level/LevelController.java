@@ -13,13 +13,14 @@ import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
+    private final LevelConfig levelConfig;
     private final StateHolder levelState;
     private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
     private boolean isActive;
 
     public LevelController(Creator creator, int levelID) {
-        LevelConfig levelConfig = creator.getLevelConfig(levelID);
+        levelConfig = creator.getLevelConfig(levelID);
         Vector2 basePosition = levelConfig.baseTileCoords;
         LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
         pathfindingTimer = 0;
@@ -32,7 +33,7 @@ public class LevelController {
     public void update(float delta) {
         if (!isActive) return;
         if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
-            LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+            LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, levelConfig.reward));
             isActive = false;
         }
         waveGenerator.update(delta);

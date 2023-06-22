@@ -16,4 +16,5 @@ public class LevelConfig {
     public TileType[][] tileMap;
     public Vector2 baseTileCoords;
     public Vector2 spawnerCoords;
+    public int reward;
 }
