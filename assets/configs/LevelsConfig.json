@@ -60,9 +60,9 @@
         ]
       },
       {
-        "waveDelay": 10,
+        "waveDelay": 15,
         "enemyCount": 1,
-        "enemyInterval": 1,
+        "enemyInterval": 10,
         "enemyTypes": [
           2
         ]

@@ -30,7 +30,7 @@
   {
     "id": 2,
     "name": "Boar God",
-    "maxHealth": 100,
+    "maxHealth": 200,
     "reward": 200,
     "spriteName": "boarGod.png",
     "speed": 70,
@@ -38,7 +38,7 @@
     "actionRate": 2,
     "actionRange": 45,
     "actionParams": {
-      "damage": 10
+      "damage": 99
     }
   }
 ]
