@@ -33,15 +33,6 @@
             "modifier": 0.5
           }
         ]
-      },
-      {
-        "cost": 15,
-        "upgrades": [
-          {
-            "upgradedParameter": "actionRate",
-            "modifier": 0.5
-          }
-        ]
       }
     ]
   },
