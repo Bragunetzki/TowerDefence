@@ -20,7 +20,7 @@ public class LevelScreen extends BasicScreen {
             client.start();
         }
         else {
-            client.setPlayerNum(0);
+            client.setPlayerNum(1);
         }
 
         while (client.getPlayerNum() == -1) {

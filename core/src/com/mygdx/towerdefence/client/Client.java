@@ -98,6 +98,7 @@ public class Client {
             readingThread.interrupt();
             writingThread.interrupt();
         }
+        if (socket == null) return;
         try {
             if (socket.isConnected()) {
                 socket.dispose();
