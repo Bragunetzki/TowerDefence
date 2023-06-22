@@ -22,4 +22,6 @@ public interface GameActor {
     ActorType getType();
     void setRefID(int refID);
     int getRefID();
+
+    void setHealth(int health);
 }

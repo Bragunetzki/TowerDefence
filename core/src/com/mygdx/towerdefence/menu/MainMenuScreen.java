@@ -39,7 +39,7 @@ public class MainMenuScreen extends BasicScreen {
         }
 
         if (multiPlayerButton.isPressed()) {
-            game.setScreen(new LevelScreen(game, 0));
+            game.setScreen(new LevelScreen(game, 0, true));
         }
 
         if (techTreeButton.isPressed()) {

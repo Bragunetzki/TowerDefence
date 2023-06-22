@@ -7,7 +7,14 @@ import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Logger;
+import com.mygdx.towerdefence.client.clientCommands.ClientCommand;
+import com.mygdx.towerdefence.client.clientCommands.ConstructBuildingClientCommand;
+import com.mygdx.towerdefence.client.clientCommands.DemolishBuildingClientCommand;
 import com.mygdx.towerdefence.client.serverCommands.*;
+import com.mygdx.towerdefence.events.ActorDeathEvent;
+import com.mygdx.towerdefence.events.AlterCurrencyEvent;
+import com.mygdx.towerdefence.events.ConstructBuildingEvent;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +22,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client {
     public static final Logger logger = new Logger("Client", Logger.INFO);
@@ -24,6 +33,12 @@ public class Client {
     private BufferedReader in;
     private OutputStreamWriter out;
     private final JsonReader jsonReader;
+
+    private final LinkedBlockingQueue<ClientCommand> commandQueue;
+    private Socket socket = null;
+
+    private AtomicBoolean running = new AtomicBoolean(false);
+    private Thread readingThread, writingThread;
 
     public Client(String addr, int port) {
         this.addr = addr;
@@ -39,23 +54,74 @@ public class Client {
         commandMap.put("damageActor", new DamageActorCommand());
         commandMap.put("moneyChanged", new MoneyChangedCommand());
         commandMap.put("endGame", new EndGameCommand());
+
+        commandQueue = new LinkedBlockingQueue<>();
         jsonReader = new JsonReader();
     }
 
     public void start() {
+        running.set(true);
         SocketHints hints = new SocketHints();
-        Socket socket = Gdx.net.newClientSocket(Net.Protocol.TCP, addr, port, hints);
+        socket = Gdx.net.newClientSocket(Net.Protocol.TCP, addr, port, hints);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new OutputStreamWriter(socket.getOutputStream());
 
-        new ReadingThread().start();
-        new WritingThread().start();
+        readingThread = new ReadingThread();
+        readingThread.start();
+        writingThread = new WritingThread();
+        writingThread.start();
+    }
+
+    public void shutDown() {
+        if (running.get()) {
+            running.set(false);
+            readingThread.interrupt();
+            writingThread.interrupt();
+        }
+        try {
+            if (socket.isConnected()) {
+                socket.dispose();
+                in.close();
+                out.close();
+            }
+        } catch (IOException ignored) {}
+    }
+
+    public void pushCommand(ClientCommand command) {
+        commandQueue.add(command);
+    }
+
+    public void constructBuilding(Integer id, int tileX, int tileY) {
+        if (socket != null) {
+            try {
+                commandQueue.put(new ConstructBuildingClientCommand(id, tileX, tileY));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(id, tileX, tileY));
+        }
+    }
+
+    public void demolishBuilding(int refID, int demolitionReturn) {
+        if (socket != null) {
+            try {
+                commandQueue.put(new DemolishBuildingClientCommand(refID));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, false));
+            LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
+        }
     }
 
     private class ReadingThread extends Thread {
         @Override
         public void run() {
-            while (true) {
+            while (running.get()) {
                 String line;
                 try {
                     line = in.readLine();
@@ -81,24 +147,20 @@ public class Client {
     }
 
     public class WritingThread extends Thread {
+
         @Override
         public void run() {
-            while (true) {
-                /*
-                String userWord;
-                time = new Date(); // текущая дата
-                dt1 = new SimpleDateFormat("HH:mm:ss"); // берем только время до секунд
-                dtime = dt1.format(time); // время
-                userWord = inputUser.readLine(); // сообщения с консоли
-                if (userWord.equals("stop")) {
-                    out.write("stop" + "\n");
-                    ClientSomthing.this.downService(); // харакири
-                    break; // выходим из цикла если пришло "stop"
-                } else {
-                    out.write("(" + dtime + ") " + nickname + ": " + userWord + "\n"); // отправляем на сервер
+            while (running.get()) {
+                ClientCommand cmd = commandQueue.poll();
+                if (cmd != null) {
+                    logger.info(cmd.getString());
+                    try {
+                        out.write(cmd.getString());
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-                out.flush(); // чистим
-                 */
             }
         }
     }
