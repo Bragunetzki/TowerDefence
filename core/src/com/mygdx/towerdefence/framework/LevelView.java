@@ -313,14 +313,14 @@ public class LevelView extends Stage implements ViewHolder {
     private void addEnemySprite(GameActor actor, int refID) {
         String textureName = creator.getEnemyConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getEnemyTexture(textureName));
-        enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.5f, TilE_SIZE * 0.5f));
+        enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f));
         addActor(enemies.get(refID));
     }
 
     private void addBuildingSprite(GameActor actor, int refID) {
         String textureName = creator.getBuildingConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getBuildingTexture(textureName));
-        GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f);
+        GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.95f, TilE_SIZE * 0.95f);
 
         int gridX = (int) ((actor.getPosition().x - LevelView.GRID_CORNER_X) / LevelView.TilE_SIZE);
         int gridY = (int) ((actor.getPosition().y - LevelView.GRID_CORNER_Y) / LevelView.TilE_SIZE);
