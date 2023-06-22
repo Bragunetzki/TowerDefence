@@ -14,7 +14,7 @@ public class BuildingConfig {
     public String name;
     public String spriteName;
     public int demolitionCurrency;
-    public List<Integer> upgradeIDs;
+    public List<BuildingUpgradeConfig> upgrades;
     public float actionRate;
     public ActionType actionType;
     public float actionRange;

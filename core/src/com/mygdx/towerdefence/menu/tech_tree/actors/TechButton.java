@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.config.config_classes.TechTreeNodeConfig;
-import com.mygdx.towerdefence.config.config_classes.TechTreeUpgradeConfig;
+import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
 import com.mygdx.towerdefence.game_state.GameState;
 import com.mygdx.towerdefence.menu.tech_tree.TechTreeTowerScreen;
 
@@ -32,7 +32,7 @@ public class TechButton extends Button {
         gameState = game.getGameState();
 
         String text = "";
-        for (TechTreeUpgradeConfig upgrade : config.upgrades) {
+        for (UpgradeConfig upgrade : config.upgrades) {
             text = text.concat(upgrade.upgradedParameter + " x " + upgrade.modifier + "\n");
         }
         text = text.trim();
@@ -88,7 +88,7 @@ public class TechButton extends Button {
         });
 
         String text = "";
-        for (TechTreeUpgradeConfig upgrade : config.upgrades) {
+        for (UpgradeConfig upgrade : config.upgrades) {
             text = text.concat(upgrade.upgradedParameter + " x " + upgrade.modifier + "\n");
         }
         text = text.concat("Cost: " + config.cost);
