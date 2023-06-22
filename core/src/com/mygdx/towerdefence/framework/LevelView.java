@@ -313,7 +313,11 @@ public class LevelView extends Stage implements ViewHolder {
     private void addEnemySprite(GameActor actor, int refID) {
         String textureName = creator.getEnemyConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getEnemyTexture(textureName));
-        enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f));
+        if (actor.getID() == 2) {
+            enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 1.05f, TilE_SIZE * 1.05f));
+        } else {
+            enemies.put(refID, new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f));
+        }
         addActor(enemies.get(refID));
     }
 

@@ -25,6 +25,7 @@ public class AssetLoader {
         assets.load("sprites/enemies/boarRanger.png", Texture.class);
         assets.load("sprites/buildings/tower.png", Texture.class);
         assets.load("sprites/buildings/base.png", Texture.class);
+        assets.load("sprites/enemies/boarGod.png", Texture.class);
         assets.load("sprites/buildings/mine.png", Texture.class);
         assets.load("background.png", Texture.class);
         assets.load("road.png", Texture.class);
