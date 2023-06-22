@@ -21,11 +21,23 @@ public class AssetLoader {
     }
 
     public void loadAll() {
-        loadDir("assets");
+        assets.load("sprites/enemies/boar.png", Texture.class);
+        assets.load("sprites/enemies/boarRanger.png", Texture.class);
+        assets.load("sprites/buildings/tower.png", Texture.class);
+        assets.load("sprites/buildings/base.png", Texture.class);
+        assets.load("sprites/buildings/mine.png", Texture.class);
+        assets.load("background.png", Texture.class);
+        assets.load("road.png", Texture.class);
+        assets.load("plot.png", Texture.class);
+        assets.load("sprites/projectile.png", Texture.class);
+        assets.load("line.png", Texture.class);
+        assets.load("claimedPlot.png", Texture.class);
+        //loadDir("assets");
     }
 
     private void loadDir(String pathname) {
         File[] files = (new File(pathname)).listFiles();
+        if (files == null) return;
         for (File file : files) {
             if (file.isDirectory()) {
                 if (file.getName().equals("configs") || file.getName().equals("styles")) continue;
