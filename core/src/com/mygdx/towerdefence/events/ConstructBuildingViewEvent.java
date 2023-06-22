@@ -13,7 +13,7 @@ public class ConstructBuildingViewEvent implements ViewEvent {
     @Override
     public void execute(ViewHolder view) {
         BuildingTileSprite tile = view.getTile(x, y);
-        if (!tile.isClaimed()) {
+        if (tile.isOwned()) {
             tile.setTouchable(Touchable.disabled);
             tile.setHoverable(false);
         }

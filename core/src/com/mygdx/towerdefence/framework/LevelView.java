@@ -87,14 +87,14 @@ public class LevelView extends Stage implements ViewHolder {
                         mapTextures[i][j] = backgroundTexture;
                         break;
                     case Plot:
-                        tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() != 1);
+                        tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() == 1);
                         tile.setPosition(map[i][j].x, map[i][j].y);
                         addActor(tile);
                         tileList.add(tile);
                         mapTextures[i][j] = null;
                         break;
                     case ClaimedPlot:
-                        tile = new BuildingTileSprite(new TextureRegion(claimedTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() == 1);
+                        tile = new BuildingTileSprite(new TextureRegion(claimedTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() == 2);
                         tile.setPosition(map[i][j].x, map[i][j].y);
                         addActor(tile);
                         tileList.add(tile);
@@ -327,10 +327,7 @@ public class LevelView extends Stage implements ViewHolder {
         BuildingTileSprite tile = getTile(gridX, gridY);
 
         if (actor.getID() != 0) {
-            if (client.getPlayerNum() == 0 && !tile.isClaimed()) {
-                building.addListener(new BuildingListener(refID, actor.getID()));
-            }
-            else if (client.getPlayerNum() == 1 && tile.isClaimed()) {
+            if (tile.isOwned()) {
                 building.addListener(new BuildingListener(refID, actor.getID()));
             }
         }
