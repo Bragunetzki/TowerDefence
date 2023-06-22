@@ -1,0 +1,15 @@
+{
+  "name": "Basic",
+  "maxHealth": 100,
+  "cost": 10,
+  "upgrades": [
+    {
+      "price": 2,
+      "modifiers": {}
+    }
+  ],
+  "demolitionCurrency": 5,
+  "actionType": "ATTACK",
+  "actionRate": 5,
+  "actionRange": 10
+}
