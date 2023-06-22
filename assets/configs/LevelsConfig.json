@@ -58,6 +58,14 @@
           1,
           0
         ]
+      },
+      {
+        "waveDelay": 10,
+        "enemyCount": 1,
+        "enemyInterval": 1,
+        "enemyTypes": [
+          2
+        ]
       }
     ],
     "mapID": 1

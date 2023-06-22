@@ -22,9 +22,23 @@
     "speed": 150,
     "actionType": "BasicAttack",
     "actionRate": 1.5,
-    "actionRange": 100,
+    "actionRange": 150,
     "actionParams": {
       "damage": 3.0
+    }
+  },
+  {
+    "id": 2,
+    "name": "Boar Abomination",
+    "maxHealth": 100,
+    "reward": 200,
+    "spriteName": "boarAbomination.png",
+    "speed": 70,
+    "actionType": "BasicAttack",
+    "actionRate": 2,
+    "actionRange": 45,
+    "actionParams": {
+      "damage": 10
     }
   }
 ]
