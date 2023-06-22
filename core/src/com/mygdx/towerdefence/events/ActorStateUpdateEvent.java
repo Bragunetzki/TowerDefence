@@ -35,7 +35,7 @@ public class ActorStateUpdateEvent implements StateEvent {
             incomingRefIDs.add(refID);
             //update existing
             if (enemies.containsKey(refID)) {
-                GameActor e = enemies.get(refID);
+                Enemy e = (Enemy) enemies.get(refID);
                 int damage = e.getHealth() - msg.health;
                 e.applyDamage(damage);
                 e.setPosition(msg.x, msg.y);

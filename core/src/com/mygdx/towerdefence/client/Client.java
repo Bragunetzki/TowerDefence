@@ -10,10 +10,12 @@ import com.badlogic.gdx.utils.Logger;
 import com.mygdx.towerdefence.client.clientCommands.ClientCommand;
 import com.mygdx.towerdefence.client.clientCommands.ConstructBuildingClientCommand;
 import com.mygdx.towerdefence.client.clientCommands.DemolishBuildingClientCommand;
+import com.mygdx.towerdefence.client.clientCommands.UpgradeBuildingClientCommand;
 import com.mygdx.towerdefence.client.serverCommands.*;
 import com.mygdx.towerdefence.events.ActorDeathEvent;
 import com.mygdx.towerdefence.events.AlterCurrencyEvent;
 import com.mygdx.towerdefence.events.ConstructBuildingEvent;
+import com.mygdx.towerdefence.events.UpgradeBuildingEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.io.BufferedReader;
@@ -37,8 +39,9 @@ public class Client {
     private final LinkedBlockingQueue<ClientCommand> commandQueue;
     private Socket socket = null;
 
-    private AtomicBoolean running = new AtomicBoolean(false);
+    private final AtomicBoolean running = new AtomicBoolean(false);
     private Thread readingThread, writingThread;
+    private boolean isOnline = false;
 
     public Client(String addr, int port) {
         this.addr = addr;
@@ -54,6 +57,7 @@ public class Client {
         commandMap.put("damageActor", new DamageActorCommand());
         commandMap.put("moneyChanged", new MoneyChangedCommand());
         commandMap.put("endGame", new EndGameCommand());
+        commandMap.put("upgradeBuilding", new UpgradeBuildingServerCommand());
 
         commandQueue = new LinkedBlockingQueue<>();
         jsonReader = new JsonReader();
@@ -61,6 +65,7 @@ public class Client {
 
     public void start() {
         running.set(true);
+        isOnline = true;
         SocketHints hints = new SocketHints();
         socket = Gdx.net.newClientSocket(Net.Protocol.TCP, addr, port, hints);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -70,6 +75,10 @@ public class Client {
         readingThread.start();
         writingThread = new WritingThread();
         writingThread.start();
+    }
+
+    public boolean isOnline() {
+        return isOnline;
     }
 
     public void shutDown() {
@@ -87,10 +96,6 @@ public class Client {
         } catch (IOException ignored) {}
     }
 
-    public void pushCommand(ClientCommand command) {
-        commandQueue.add(command);
-    }
-
     public void constructBuilding(Integer id, int tileX, int tileY) {
         if (socket != null) {
             try {
@@ -101,6 +106,19 @@ public class Client {
         }
         else {
             LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(id, tileX, tileY));
+        }
+    }
+
+    public void upgradeBuilding(int refID, int upgradeNum) {
+        if (socket != null) {
+            try {
+                commandQueue.put(new UpgradeBuildingClientCommand(refID, upgradeNum));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            LevelScreen.eventQueue.addStateEvent(new UpgradeBuildingEvent(refID, upgradeNum));
         }
     }
 

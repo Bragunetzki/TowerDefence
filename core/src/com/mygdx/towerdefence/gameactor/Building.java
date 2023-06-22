@@ -3,8 +3,14 @@ package com.mygdx.towerdefence.gameactor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
+import com.mygdx.towerdefence.config.config_classes.BuildingUpgradeConfig;
+import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
 import com.mygdx.towerdefence.gameactor.action.Action;
+import com.mygdx.towerdefence.gameactor.action.GenerateCurrencyAction;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Building implements GameActor, Pool.Poolable {
     private final int id;
@@ -23,6 +29,7 @@ public class Building implements GameActor, Pool.Poolable {
     private float buildTimer;
     private float buildTimerStepCurrent;
     private static final float buildTimerStep = 0.5f;
+    private final Set<Integer> boughtUpgrades = new HashSet<>();
 
     public Building(BuildingConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -174,5 +181,22 @@ public class Building implements GameActor, Pool.Poolable {
     @Override
     public ActorType getType() {
         return actorType;
+    }
+
+    public void applyUpgrade(BuildingUpgradeConfig upgrade, int index) {
+        if (boughtUpgrades.contains(index))
+            return;
+        for (UpgradeConfig u : upgrade.upgrades) {
+            switch (u.upgradedParameter) {
+                case "actionRate":
+                    action.setRate(action.getRate() * u.modifier);
+                    break;
+                case "value":
+                    GenerateCurrencyAction gAction = (GenerateCurrencyAction) action;
+                    (gAction).setValue((int) (gAction.getValue() * u.modifier));
+                    break;
+            }
+        }
+        boughtUpgrades.add(index);
     }
 }

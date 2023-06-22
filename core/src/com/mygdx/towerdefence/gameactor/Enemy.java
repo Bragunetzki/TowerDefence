@@ -1,8 +1,8 @@
 package com.mygdx.towerdefence.gameactor;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.gameactor.action.Action;
 import com.mygdx.towerdefence.config.config_classes.EnemyConfig;
+import com.mygdx.towerdefence.gameactor.action.Action;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
 
 public class Enemy implements GameActor {
@@ -21,7 +21,6 @@ public class Enemy implements GameActor {
     private int refID;
     private GameActor target;
     private Vector2 moveTarget;
-    private Vector2 previousPosition;
 
     public Enemy(EnemyConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -40,10 +39,6 @@ public class Enemy implements GameActor {
 
     public Enemy(EnemyConfig config, Action action) {
         this(config, action, Vector2.Zero);
-    }
-
-    public float getSpeed() {
-        return speed;
     }
 
     @Override
@@ -162,12 +157,7 @@ public class Enemy implements GameActor {
 
     @Override
     public void setPosition(float x, float y) {
-        previousPosition = position.cpy();
         this.position.x = x;
         this.position.y = y;
-    }
-
-    public Vector2 getPreviousPosition() {
-        return previousPosition;
     }
 }

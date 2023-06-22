@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class GenerateCurrencyAction extends DoNothingAction {
     private final static String[] argList = new String[]{"value"};
-    private final int value;
+    private int value;
 
     public GenerateCurrencyAction(float rate, float range, Map<String, Float> params) {
-        super(rate, range, params);
+        super(rate, range);
         value = Math.round(params.get(argList[0]));
     }
 
@@ -19,5 +19,13 @@ public class GenerateCurrencyAction extends DoNothingAction {
     public boolean call(GameActor caller, float delta, GameActor target) {
         LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(value));
         return true;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

@@ -12,7 +12,9 @@ import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.client.Client;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
+import com.mygdx.towerdefence.config.config_classes.BuildingUpgradeConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
+import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
 import com.mygdx.towerdefence.events.*;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
@@ -21,6 +23,7 @@ import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.inputListeners.BuildingListener;
 import com.mygdx.towerdefence.level.Tile;
 import com.mygdx.towerdefence.menu.LevelSelectionScreen;
+import com.mygdx.towerdefence.menu.MainMenuScreen;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 import com.mygdx.towerdefence.sprite.GameActorView;
 import com.mygdx.towerdefence.sprite.Projectile;
@@ -138,48 +141,25 @@ public class LevelView extends Stage implements ViewHolder {
     }
 
     @Override
-    public void showConstructionDialog(final int tileX, final int tileY) {
-        final Map<Integer, BuildingConfig> buildings = creator.getBuildingMap();
-        final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
-            @Override
-            protected void result(Object object) {
-                client.constructBuilding((Integer) object, tileX, tileY);
-                this.hide(null);
-            }
-        };
-        dialog.addListener(new InputListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (x < 0 || x > dialog.getWidth() || y < 0 || y > dialog.getHeight()) {
-                    dialog.hide(null);
-                }
-                return true;
-            }
-        });
-        dialog.text("Select Building:");
-        for (int i : buildings.keySet()) {
-            if (i == 0) continue;
-            dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
-        }
-        dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
-        dialog.show(this, null);
-    }
-
-    @Override
     public void showEndDialog(final boolean victory, final int reward) {
         final Dialog dialog = new Dialog("Game Over", assets.getSkin()) {
             @Override
             protected void result(Object object) {
                 client.shutDown();
                 game.getGameState().alterInGameCurrency(reward);
-                if (victory)
-                    game.getGameState().setLevelsPassed(levelID + 1);
                 LevelScreen.eventQueue.clearAll();
-
                 game.getScreen().dispose();
+                if (victory && !client.isOnline()) {
+                    game.getGameState().setLevelsPassed(levelID + 1);
+                }
+
                 if ((boolean) object) {
-                    game.setScreen(new LevelSelectionScreen(game));
+                    if (client.isOnline())
+                        game.setScreen(new MainMenuScreen(game));
+                    else
+                        game.setScreen(new LevelSelectionScreen(game));
                 } else {
-                    game.setScreen(new LevelScreen(game, levelID));
+                    game.setScreen(new LevelScreen(game, levelID, false));
                 }
                 this.hide(null);
             }
@@ -202,13 +182,45 @@ public class LevelView extends Stage implements ViewHolder {
     }
 
     @Override
+    public void showConstructionDialog(final int tileX, final int tileY) {
+        final Map<Integer, BuildingConfig> buildings = creator.getBuildingMap();
+        final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
+            @Override
+            protected void result(Object object) {
+                client.constructBuilding((Integer) object, tileX, tileY);
+                this.hide(null);
+            }
+        };
+        dialog.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (x < 0 || x > dialog.getWidth() || y < 0 || y > dialog.getHeight()) {
+                    dialog.hide(null);
+                }
+                return true;
+            }
+        });
+        dialog.text("Select Building:");
+        for (int i : buildings.keySet()) {
+            if (i == 0) continue;
+            dialog.button(buildings.get(i).name + ": " + buildings.get(i).cost, i);
+            dialog.getButtonTable().row();
+        }
+        dialog.setPosition(map[tileX][tileY].x, map[tileX][tileY].y);
+        dialog.show(this, null);
+    }
+
+    @Override
     public void showBuildingDialog(final int refID, final int ID) {
+        final List<BuildingUpgradeConfig> upgrades = creator.getBuildingConfig(ID).upgrades;
         final Dialog dialog = new Dialog("BuildingMenu", assets.getSkin()) {
             @Override
             protected void result(Object object) {
                 if ((Integer) object == 0) {
                     int demolitionReturn = creator.getBuildingConfig(ID).demolitionCurrency;
                     client.demolishBuilding(refID, demolitionReturn);
+                }
+                else {
+                    client.upgradeBuilding(refID, (Integer) object - 1);
                 }
                 this.hide(null);
             }
@@ -222,6 +234,16 @@ public class LevelView extends Stage implements ViewHolder {
             }
         });
         dialog.text("Choose what to do:");
+        for (int i = 0; i < upgrades.size(); i++) {
+            BuildingUpgradeConfig upgrade = upgrades.get(i);
+            StringBuilder upgradeText = new StringBuilder();
+            for (UpgradeConfig modifier : upgrade.upgrades) {
+                upgradeText.append(modifier.upgradedParameter).append(" ").append(modifier.modifier).append(" ");
+            }
+
+            dialog.button(upgradeText + ": " + upgrade.cost, i + 1);
+            dialog.getButtonTable().row();
+        }
         dialog.button("Demolish!", 0);
         dialog.setPosition(buildings.get(refID).getX(), buildings.get(refID).getY());
         dialog.show(this, null);

@@ -10,13 +10,12 @@ import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import java.util.Map;
 
 public class BasicAttackAction extends DoNothingAction {
-    private final float range;
-    private final int damage;
+    private int damage;
+    //private float range;
     public final static String[] argList = new String[]{"damage"};
 
     public BasicAttackAction(float rate, float range, Map<String, Float> params) {
-        super(rate, range, params);
-        this.range = range;
+        super(rate, range);
         damage = Math.round(params.get(argList[0]));
     }
 
@@ -25,13 +24,20 @@ public class BasicAttackAction extends DoNothingAction {
         if (target == null) return false;
         boolean targetsEnemy = (target.getType() == ActorType.Enemy);
 
-        if (target.getPosition().dst(caller.getPosition()) <= range) {
-            if (range <= LevelView.TilE_SIZE / 2)
+        if (target.getPosition().dst(caller.getPosition()) <= getRange()) {
+            if (getRange() <= LevelView.TilE_SIZE / 2)
                 LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(damage, target.getRefID(), targetsEnemy));
             else
                 LevelScreen.eventQueue.addViewEvent(new RangedAttackEvent(damage, caller.getPosition().x, caller.getPosition().y, target.getRefID(), targetsEnemy));
             return true;
         }
         return false;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 }

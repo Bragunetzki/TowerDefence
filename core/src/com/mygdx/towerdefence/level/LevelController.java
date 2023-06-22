@@ -13,16 +13,17 @@ import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class LevelController {
     private static final int PATHFINDING_UPDATE_RATE = 0; //optional parameter for optimization.
-    private final LevelConfig levelConfig;
     private final StateHolder levelState;
     private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
     private boolean isActive;
     private final boolean isOnline;
+    private final int reward;
 
-public LevelController(Creator creator, int levelID, boolean isOnline) {
-        levelConfig = creator.getLevelConfig(levelID);
- Vector2 basePosition = levelConfig.baseTileCoords;
+    public LevelController(Creator creator, int levelID, boolean isOnline) {
+        LevelConfig levelConfig = creator.getLevelConfig(levelID);
+        reward = levelConfig.reward;
+        Vector2 basePosition = levelConfig.baseTileCoords;
 
         if (!isOnline)
             LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
@@ -39,10 +40,10 @@ public LevelController(Creator creator, int levelID, boolean isOnline) {
     }
 
     public void update(float delta) {
-      if (!isOnline) {
+        if (!isOnline) {
             if (!isActive) return;
             if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
-                LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+                LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, reward));
                 isActive = false;
             }
             waveGenerator.update(delta);
@@ -55,19 +56,19 @@ public LevelController(Creator creator, int levelID, boolean isOnline) {
             }
             if (pathfindingTimer <= 0 && PATHFINDING_UPDATE_RATE != 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
             else pathfindingTimer -= delta;
-        }
-        else {
+        } else {
             for (int key : levelState.getEnemies().keySet()) {
-                predictEnemy((Enemy) levelState.getEnemies().get(key), key, delta);
+                predictEnemy((Enemy) levelState.getEnemies().get(key), delta);
             }
         }
     }
 
-    private void predictEnemy(Enemy enemy, int key, float delta) {
-        Vector2 currentPosition = enemy.getPosition().cpy();
-        Vector2 previousPosition = enemy.getPreviousPosition().cpy();
-        Vector2 moveTarget = currentPosition.cpy().add(currentPosition.cpy().sub(previousPosition));
-        enemy.setMoveTarget(moveTarget);
+    private void predictEnemy(Enemy enemy, float delta) {
+        enemy.setTarget(enemy.getPriority().chooseTarget(enemy.getPosition(), levelState.getBuildings().values()));
+        if (enemy.getTarget() != null) {
+            Vector2 nextNode = levelState.getMap().getPath(enemy.getPosition(), enemy.getTarget().getPosition());
+            enemy.setMoveTarget(nextNode);
+        }
         enemy.move(delta);
     }
 
