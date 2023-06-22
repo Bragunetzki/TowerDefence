@@ -21,6 +21,10 @@ public class Projectile extends GameSprite {
 
     @Override
     public void act(float delta) {
+        if (target == null) {
+            this.remove();
+            return;
+        }
         if (collidesWithTarget()) {
             LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(damage, targetRefID, targetsEnemy));
             this.remove();
