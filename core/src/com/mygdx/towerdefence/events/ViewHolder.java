@@ -14,4 +14,6 @@ public interface ViewHolder {
     void addProjectile(int damage, float x, float y, int targetRefID, boolean targetsEnemy);
 
     void showEndDialog(boolean victory, int reward);
+
+    void setTimerLabel(float time);
 }

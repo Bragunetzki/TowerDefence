@@ -20,7 +20,6 @@ public class ActorStateUpdateEvent implements StateEvent {
         this.buildingMessages = buildingMessages;
     }
 
-
     //exists on server --> doesn't exist locally
     //exists on server --> exists locally
     //doesn't exist on server --> exists locally
@@ -69,8 +68,7 @@ public class ActorStateUpdateEvent implements StateEvent {
             //update existing
             if (buildings.containsKey(refID)) {
                 Building e = (Building) buildings.get(refID);
-                int damage = e.getHealth() - msg.health;
-                e.applyDamage(damage);
+                e.setHealth(msg.health);
                 Tile targetTile = state.getMap().mapArr[msg.gridX][msg.gridY];
                 e.setPosition( targetTile.x, targetTile.y);
                 e.setBuildTime(msg.buildTimeRemaining);

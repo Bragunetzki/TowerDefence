@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.towerdefence.TowerDefenceGame;
+import com.mygdx.towerdefence.client.Client;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
@@ -45,8 +46,10 @@ public class LevelView extends Stage implements ViewHolder {
     private final TowerDefenceGame game;
     private final Texture backgroundTexture;
     private final int levelID;
+    private final Client client;
+    private boolean trackTimer;
 
-    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
+    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map, Client client) {
         super(screen.getViewport());
         this.levelID = levelID;
         enemies = new HashMap<>();
@@ -56,13 +59,15 @@ public class LevelView extends Stage implements ViewHolder {
         creator = game.getCreator();
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         tileList = new LinkedList<>();
-        currencyLabel = new Label("0", assets.getSkin());
+        currencyLabel = new Label("Currency: ", assets.getSkin());
         currencyLabel.setPosition(50, 30);
-        timerLabel = new Label("100", assets.getSkin());
+        timerLabel = new Label("Timer: ", assets.getSkin());
         timerLabel.setPosition(50, WORLD_SIZE_Y * 0.95f);
         addActor(currencyLabel);
         addActor(timerLabel);
         this.map = map;
+        this.client = client;
+        trackTimer = true;
 
         backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
@@ -118,8 +123,18 @@ public class LevelView extends Stage implements ViewHolder {
     public void update(StateHolder state) {
         syncActors(enemies, state.getEnemies(), true);
         syncActors(buildings, state.getBuildings(), false);
-        currencyLabel.setText(state.getCurrency());
-        timerLabel.setText((int) state.getWaveGenerator().getWaveTimer());
+        currencyLabel.setText("Currency: "+ state.getCurrency());
+
+        if (trackTimer)
+            setTimerLabel(state.getWaveGenerator().getWaveTimer());
+    }
+
+    public void setTimerLabel(float time) {
+        timerLabel.setText("Timer: " + (int) time);
+    }
+
+    public void setTrackTimer(boolean value) {
+        this.trackTimer = value;
     }
 
     @Override
@@ -128,7 +143,7 @@ public class LevelView extends Stage implements ViewHolder {
         final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
             @Override
             protected void result(Object object) {
-                LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent((Integer) object, tileX, tileY));
+                client.constructBuilding((Integer) object, tileX, tileY);
                 this.hide(null);
             }
         };
@@ -154,10 +169,12 @@ public class LevelView extends Stage implements ViewHolder {
         final Dialog dialog = new Dialog("Game Over", assets.getSkin()) {
             @Override
             protected void result(Object object) {
+                client.shutDown();
                 game.getGameState().alterInGameCurrency(reward);
                 if (victory)
                     game.getGameState().setLevelsPassed(levelID + 1);
                 LevelScreen.eventQueue.clearAll();
+
                 game.getScreen().dispose();
                 if ((boolean) object) {
                     game.setScreen(new LevelSelectionScreen(game));
@@ -191,8 +208,7 @@ public class LevelView extends Stage implements ViewHolder {
             protected void result(Object object) {
                 if ((Integer) object == 0) {
                     int demolitionReturn = creator.getBuildingConfig(ID).demolitionCurrency;
-                    LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, false));
-                    LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
+                    client.demolishBuilding(refID, demolitionReturn);
                 }
                 this.hide(null);
             }

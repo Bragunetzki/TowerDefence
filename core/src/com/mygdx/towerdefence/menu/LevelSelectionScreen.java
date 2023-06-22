@@ -65,7 +65,7 @@ public class LevelSelectionScreen extends BasicScreen {
     }
 
     public void startLevel(int levelID) {
-        game.setScreen(new LevelScreen(game, levelID));
+        game.setScreen(new LevelScreen(game, levelID, false));
     }
 
 }
