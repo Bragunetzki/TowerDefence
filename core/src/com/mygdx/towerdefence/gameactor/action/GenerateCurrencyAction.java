@@ -11,7 +11,7 @@ public class GenerateCurrencyAction extends DoNothingAction {
     private int value;
 
     public GenerateCurrencyAction(float rate, float range, Map<String, Float> params) {
-        super(rate, range);
+        super(rate, range, params);
         value = Math.round(params.get(argList[0]));
     }
 

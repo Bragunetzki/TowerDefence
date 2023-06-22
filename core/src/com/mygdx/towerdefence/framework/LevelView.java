@@ -15,7 +15,8 @@ import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.BuildingUpgradeConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
-import com.mygdx.towerdefence.events.*;
+import com.mygdx.towerdefence.events.StateHolder;
+import com.mygdx.towerdefence.events.ViewHolder;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.gameactor.Building;
@@ -47,7 +48,6 @@ public class LevelView extends Stage implements ViewHolder {
     private final Label currencyLabel;
     private final Label timerLabel;
     private final TowerDefenceGame game;
-    private final Texture backgroundTexture;
     private final int levelID;
     private final Client client;
     private boolean trackTimer;
@@ -72,20 +72,29 @@ public class LevelView extends Stage implements ViewHolder {
         this.client = client;
         trackTimer = true;
 
-        backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
+        Texture backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
         Texture roadTexture = assets.getTexture(levelConfig.roadTextureName);
+        Texture claimedTexture = assets.getTexture(levelConfig.claimedPlotTextureName);
 
         mapTextures = new Texture[map.length][map[0].length];
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
+                BuildingTileSprite tile;
                 switch (map[i][j].type) {
                     case Background:
                         mapTextures[i][j] = backgroundTexture;
                         break;
                     case Plot:
-                        BuildingTileSprite tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE);
+                        tile = new BuildingTileSprite(new TextureRegion(plotTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() == 1);
+                        tile.setPosition(map[i][j].x, map[i][j].y);
+                        addActor(tile);
+                        tileList.add(tile);
+                        mapTextures[i][j] = null;
+                        break;
+                    case ClaimedPlot:
+                        tile = new BuildingTileSprite(new TextureRegion(claimedTexture), i, j, TilE_SIZE, TilE_SIZE, client.getPlayerNum() == 2);
                         tile.setPosition(map[i][j].x, map[i][j].y);
                         addActor(tile);
                         tileList.add(tile);
@@ -110,12 +119,7 @@ public class LevelView extends Stage implements ViewHolder {
     private void drawMap() {
         for (int i = 0; i < mapTextures.length; i++) {
             for (int j = 0; j < mapTextures[0].length; j++) {
-                this.getBatch().draw(backgroundTexture, map[i][j].x, map[i][j].y, TilE_SIZE, TilE_SIZE);
-            }
-        }
-        for (int i = 0; i < mapTextures.length; i++) {
-            for (int j = 0; j < mapTextures[0].length; j++) {
-                if (mapTextures[i][j] != null && mapTextures[i][j] != backgroundTexture) {
+                if (mapTextures[i][j] != null) {
                     this.getBatch().draw(mapTextures[i][j], map[i][j].x, map[i][j].y, TilE_SIZE, TilE_SIZE);
                 }
             }
@@ -126,7 +130,7 @@ public class LevelView extends Stage implements ViewHolder {
     public void update(StateHolder state) {
         syncActors(enemies, state.getEnemies(), true);
         syncActors(buildings, state.getBuildings(), false);
-        currencyLabel.setText("Currency: "+ state.getCurrency());
+        currencyLabel.setText("Currency: " + state.getCurrency());
 
         if (trackTimer)
             setTimerLabel(state.getWaveGenerator().getWaveTimer());
@@ -218,8 +222,7 @@ public class LevelView extends Stage implements ViewHolder {
                 if ((Integer) object == 0) {
                     int demolitionReturn = creator.getBuildingConfig(ID).demolitionCurrency;
                     client.demolishBuilding(refID, demolitionReturn);
-                }
-                else {
+                } else {
                     client.upgradeBuilding(refID, (Integer) object - 1);
                 }
                 this.hide(null);
@@ -318,7 +321,16 @@ public class LevelView extends Stage implements ViewHolder {
         String textureName = creator.getBuildingConfig(actor.getID()).spriteName;
         TextureRegion texture = new TextureRegion(assets.getBuildingTexture(textureName));
         GameActorView building = new GameActorView(texture, assets.getSkin(), actor.getPosition().x, actor.getPosition().y, TilE_SIZE * 0.8f, TilE_SIZE * 0.8f);
-        if (actor.getID() != 0) building.addListener(new BuildingListener(refID, actor.getID()));
+
+        int gridX = (int) ((actor.getPosition().x - LevelView.GRID_CORNER_X) / LevelView.TilE_SIZE);
+        int gridY = (int) ((actor.getPosition().y - LevelView.GRID_CORNER_Y) / LevelView.TilE_SIZE);
+        BuildingTileSprite tile = getTile(gridX, gridY);
+
+        if (actor.getID() != 0) {
+            if (tile.isOwned()) {
+                building.addListener(new BuildingListener(refID, actor.getID()));
+            }
+        }
         buildings.put(refID, building);
         addActor(building);
     }

@@ -15,7 +15,7 @@ public class BasicAttackAction extends DoNothingAction {
     public final static String[] argList = new String[]{"damage"};
 
     public BasicAttackAction(float rate, float range, Map<String, Float> params) {
-        super(rate, range);
+        super(rate, range, params);
         damage = Math.round(params.get(argList[0]));
     }
 

@@ -25,6 +25,9 @@ public class Projectile extends GameSprite {
             LevelScreen.eventQueue.addStateEvent(new DamageActorEvent(damage, targetRefID, targetsEnemy));
             this.remove();
         }
+        if (isOutOfBounds()) {
+            this.remove();
+        }
         Vector2 targetPos = new Vector2(target.getX(), target.getY());
         Vector2 projPos = new Vector2(getX(), getY());
         Vector2 direction = targetPos.sub(projPos);
@@ -34,10 +37,15 @@ public class Projectile extends GameSprite {
     }
 
     private boolean collidesWithTarget() {
+        if (target == null) return false;
         boolean a = (getX() >= target.getX() - target.getWidth() / 2);
         boolean c = (getY() >= target.getY() - target.getHeight() / 2);
         boolean b = (getX() <= target.getX() + target.getWidth() / 2);
         boolean d = (getY() <= target.getY() + target.getHeight() / 2);
         return a && b && c && d;
+    }
+
+    private boolean isOutOfBounds() {
+        return getX() > LevelScreen.WORLD_SIZE_X || getX() < 0 || getY() > LevelScreen.WORLD_SIZE_Y || getY() < 0;
     }
 }

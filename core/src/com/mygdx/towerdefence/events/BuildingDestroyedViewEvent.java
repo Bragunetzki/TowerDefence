@@ -14,7 +14,9 @@ public class BuildingDestroyedViewEvent implements ViewEvent {
     @Override
     public void execute(ViewHolder view) {
         BuildingTileSprite tile = view.getTile(x, y);
-        tile.setTouchable(Touchable.enabled);
-        tile.setHoverable(true);
+        if (tile.isOwned()) {
+            tile.setTouchable(Touchable.enabled);
+            tile.setHoverable(true);
+        }
     }
 }
