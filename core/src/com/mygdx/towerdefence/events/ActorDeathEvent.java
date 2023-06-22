@@ -3,6 +3,7 @@ package com.mygdx.towerdefence.events;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.config_classes.EnemyConfig;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
+import com.mygdx.towerdefence.gameactor.GameActor;
 import com.mygdx.towerdefence.level.Tile;
 
 public class ActorDeathEvent implements StateEvent {
@@ -17,12 +18,16 @@ public class ActorDeathEvent implements StateEvent {
     @Override
     public void execute(StateHolder state) {
         if (isEnemy) {
-            EnemyConfig config = state.getCreator().getEnemyConfig(state.getEnemies().get(refID).getID());
+            GameActor enemy = state.getEnemies().get(refID);
+            if (enemy == null) return;
+            EnemyConfig config = state.getCreator().getEnemyConfig(enemy.getID());
             LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(config.reward));
             state.getEnemies().remove(refID);
         } else {
-            int id = state.getBuildings().get(refID).getID();
-            Vector2 pos = state.getBuildings().get(refID).getPosition();
+            GameActor building = state.getBuildings().get(refID);
+            if (building == null) return;
+            int id = building.getID();
+            Vector2 pos = building.getPosition();
             Tile tile = state.getMap().positionToTile(pos.x, pos.y);
             state.getBuildings().remove(refID);
             LevelScreen.eventQueue.addViewEvent(new BuildingDestroyedViewEvent(tile.gridX, tile.gridY));

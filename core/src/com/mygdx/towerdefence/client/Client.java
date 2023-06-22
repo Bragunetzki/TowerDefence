@@ -161,7 +161,7 @@ public class Client {
 
                 JsonValue msg = jsonReader.parse(line);
 
-                logger.info(msg.toString());
+                //logger.info(msg.toString());
                 if (msg.has("cmd")) {
                     String commandName = msg.getString("cmd");
                     if (commandMap.containsKey(commandName)) {

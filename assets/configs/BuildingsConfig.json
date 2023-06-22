@@ -20,7 +20,7 @@
     "demolitionCurrency": 15,
     "actionType": "BasicAttack",
     "actionRate": 1,
-    "actionRange": 120,
+    "actionRange": 250,
     "actionParams": {
       "damage": 5.0
     },

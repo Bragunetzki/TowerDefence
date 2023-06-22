@@ -2,6 +2,7 @@ package com.mygdx.towerdefence.events;
 
 import com.mygdx.towerdefence.client.serverCommands.BuildingMessage;
 import com.mygdx.towerdefence.client.serverCommands.EnemyMessage;
+import com.mygdx.towerdefence.framework.screens.LevelScreen;
 import com.mygdx.towerdefence.gameactor.Building;
 import com.mygdx.towerdefence.gameactor.Enemy;
 import com.mygdx.towerdefence.gameactor.GameActor;
@@ -28,7 +29,6 @@ public class ActorStateUpdateEvent implements StateEvent {
         Map<Integer, GameActor> buildings = state.getBuildings();
         Map<Integer, GameActor> enemies = state.getEnemies();
         List<Integer> incomingRefIDs = new ArrayList<>();
-        List<Integer> missingIDs = new ArrayList<>();
 
         for (EnemyMessage msg : enemyMessages) {
             int refID = msg.refID;
@@ -52,15 +52,11 @@ public class ActorStateUpdateEvent implements StateEvent {
         //delete missing
         for (int refID : enemies.keySet()) {
             if (!incomingRefIDs.contains(refID)) {
-                missingIDs.add(refID);
+                LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, true));
             }
-        }
-        for (int refID : missingIDs) {
-            enemies.remove(refID);
         }
 
         incomingRefIDs.clear();
-        missingIDs.clear();
 
         for (BuildingMessage msg : buildingMessages) {
             int refID = msg.refID;
@@ -70,7 +66,7 @@ public class ActorStateUpdateEvent implements StateEvent {
                 Building e = (Building) buildings.get(refID);
                 e.setHealth(msg.health);
                 Tile targetTile = state.getMap().mapArr[msg.gridX][msg.gridY];
-                e.setPosition( targetTile.x, targetTile.y);
+                e.setPosition(targetTile.x, targetTile.y);
                 e.setBuildTime(msg.buildTimeRemaining);
             }
             //create new
@@ -85,11 +81,8 @@ public class ActorStateUpdateEvent implements StateEvent {
         //delete missing
         for (int refID : buildings.keySet()) {
             if (!incomingRefIDs.contains(refID)) {
-                missingIDs.add(refID);
+                LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, false));
             }
-        }
-        for (int refID : missingIDs) {
-            buildings.remove(refID);
         }
     }
 }
