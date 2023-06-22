@@ -23,7 +23,27 @@
     "actionRange": 120,
     "actionParams": {
       "damage": 5.0
-    }
+    },
+    "upgrades": [
+      {
+        "cost": 10,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      },
+      {
+        "cost": 15,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "Gold Mine",
@@ -37,6 +57,26 @@
     "actionRange": 0,
     "actionParams": {
       "value": 5.0
-    }
+    },
+    "upgrades": [
+      {
+        "cost": 10,
+        "upgrades": [
+          {
+            "upgradedParameter": "actionRate",
+            "modifier": 0.5
+          }
+        ]
+      },
+      {
+        "cost": 15,
+        "upgrades": [
+          {
+            "upgradedParameter": "value",
+            "modifier": 2
+          }
+        ]
+      }
+    ]
   }
 ]

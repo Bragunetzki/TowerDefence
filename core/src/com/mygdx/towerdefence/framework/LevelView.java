@@ -176,23 +176,29 @@ public class LevelView extends Stage implements ViewHolder {
                 LevelScreen.eventQueue.clearAll();
 
                 game.getScreen().dispose();
-                game.setScreen(new LevelSelectionScreen(game));
+                if ((boolean) object) {
+                    game.setScreen(new LevelSelectionScreen(game));
+                } else {
+                    game.setScreen(new LevelScreen(game, levelID));
+                }
                 this.hide(null);
             }
         };
         if (victory) {
-            dialog.text("You Win!");
+            dialog.text("You Win!\nYour reward: " + reward);
+            dialog.button("Ok", true);
         } else {
             dialog.text("You Lost!");
+            dialog.button("Ok", true);
+            dialog.button("Try again", false);
         }
         dialog.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
         });
-        dialog.button("Ok", 0);
-        dialog.setPosition(LevelScreen.WORLD_SIZE_X / 2 - dialog.getWidth(), LevelScreen.WORLD_SIZE_Y / 2 - dialog.getHeight());
         dialog.show(this, null);
+        dialog.setPosition(LevelScreen.WORLD_SIZE_X / 2 - dialog.getWidth() / 2, LevelScreen.WORLD_SIZE_Y / 2 - dialog.getHeight());
     }
 
     @Override

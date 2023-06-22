@@ -1,6 +1,6 @@
 package com.mygdx.towerdefence.config.config_classes;
 
-public class TechTreeUpgradeConfig {
+public class UpgradeConfig {
     public String upgradedParameter;
     public float modifier;
 }

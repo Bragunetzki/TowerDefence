@@ -3,7 +3,7 @@ package com.mygdx.towerdefence.game_state;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.TechTreeNodeConfig;
-import com.mygdx.towerdefence.config.config_classes.TechTreeUpgradeConfig;
+import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class GameStateCreator extends Creator {
     }
 
     private void updateOneConfig(TechTreeNodeConfig techTreeNodeConfig, BuildingConfig buildingConfig) {
-        for (TechTreeUpgradeConfig upgrade : techTreeNodeConfig.upgrades) {
+        for (UpgradeConfig upgrade : techTreeNodeConfig.upgrades) {
             switch (upgrade.upgradedParameter) {
                 case "maxHealth": {
                     buildingConfig.maxHealth *= upgrade.modifier;
