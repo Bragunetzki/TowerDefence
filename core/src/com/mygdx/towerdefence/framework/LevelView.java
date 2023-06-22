@@ -169,10 +169,12 @@ public class LevelView extends Stage implements ViewHolder {
         final Dialog dialog = new Dialog("Game Over", assets.getSkin()) {
             @Override
             protected void result(Object object) {
+                client.shutDown();
                 game.getGameState().alterInGameCurrency(reward);
                 if (victory)
                     game.getGameState().setLevelsPassed(levelID + 1);
                 LevelScreen.eventQueue.clearAll();
+
                 game.getScreen().dispose();
                 game.setScreen(new LevelSelectionScreen(game));
                 this.hide(null);

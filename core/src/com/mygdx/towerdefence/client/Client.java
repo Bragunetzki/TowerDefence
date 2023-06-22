@@ -23,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Client {
     public static final Logger logger = new Logger("Client", Logger.INFO);
@@ -35,6 +36,9 @@ public class Client {
 
     private final LinkedBlockingQueue<ClientCommand> commandQueue;
     private Socket socket = null;
+
+    private AtomicBoolean running = new AtomicBoolean(false);
+    private Thread readingThread, writingThread;
 
     public Client(String addr, int port) {
         this.addr = addr;
@@ -56,16 +60,24 @@ public class Client {
     }
 
     public void start() {
+        running.set(true);
         SocketHints hints = new SocketHints();
         socket = Gdx.net.newClientSocket(Net.Protocol.TCP, addr, port, hints);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new OutputStreamWriter(socket.getOutputStream());
 
-        new ReadingThread().start();
-        new WritingThread().start();
+        readingThread = new ReadingThread();
+        readingThread.start();
+        writingThread = new WritingThread();
+        writingThread.start();
     }
 
-    private void shutDown() {
+    public void shutDown() {
+        if (running.get()) {
+            running.set(false);
+            readingThread.interrupt();
+            writingThread.interrupt();
+        }
         try {
             if (socket.isConnected()) {
                 socket.dispose();
@@ -109,7 +121,7 @@ public class Client {
     private class ReadingThread extends Thread {
         @Override
         public void run() {
-            while (true) {
+            while (running.get()) {
                 String line;
                 try {
                     line = in.readLine();
@@ -135,9 +147,10 @@ public class Client {
     }
 
     public class WritingThread extends Thread {
+
         @Override
         public void run() {
-            while (true) {
+            while (running.get()) {
                 ClientCommand cmd = commandQueue.poll();
                 if (cmd != null) {
                     logger.info(cmd.getString());
