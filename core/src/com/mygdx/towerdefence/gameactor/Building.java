@@ -167,6 +167,11 @@ public class Building implements GameActor, Pool.Poolable {
     }
 
     @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
     public ActorType getType() {
         return actorType;
     }

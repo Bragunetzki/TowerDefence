@@ -2,6 +2,7 @@ package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
 import com.mygdx.towerdefence.events.ActorStateUpdateEvent;
+import com.mygdx.towerdefence.events.SetTimerEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ActorStateUpdateCommand implements ServerCommand {
         List<BuildingMessage> buildings = new ArrayList<>();
         if (msg.has("enemies")) {
             JsonValue jsonEnemies = msg.get("enemies");
-            for (JsonValue jsonEnemy = jsonEnemies.child; jsonEnemy != null; jsonEnemy = jsonEnemies.next) {
+            for (JsonValue jsonEnemy = jsonEnemies.child; jsonEnemy != null; jsonEnemy = jsonEnemy.next) {
                 int refID = jsonEnemy.getInt("refID");
                 int id = jsonEnemy.getInt("id");
                 int health = jsonEnemy.getInt("health");
@@ -25,7 +26,7 @@ public class ActorStateUpdateCommand implements ServerCommand {
         }
         if (msg.has("buildings")) {
             JsonValue jsonBuildings = msg.get("buildings");
-            for (JsonValue jsonBuilding = jsonBuildings.child; jsonBuilding != null; jsonBuilding = jsonBuildings.next) {
+            for (JsonValue jsonBuilding = jsonBuildings.child; jsonBuilding != null; jsonBuilding = jsonBuilding.next) {
                 int refID = jsonBuilding.getInt("refID");
                 int id = jsonBuilding.getInt("id");
                 int health = jsonBuilding.getInt("health");
@@ -35,7 +36,9 @@ public class ActorStateUpdateCommand implements ServerCommand {
                 buildings.add(new BuildingMessage(refID, id, health, gridX, gridY, buildTimeRemaining));
             }
         }
+        float timer = msg.getFloat("timer");
 
         LevelScreen.eventQueue.addStateEvent(new ActorStateUpdateEvent(enemies, buildings));
+        LevelScreen.eventQueue.addViewEvent(new SetTimerEvent(timer));
     }
 }

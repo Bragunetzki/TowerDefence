@@ -140,6 +140,7 @@ public class Client {
             while (true) {
                 ClientCommand cmd = commandQueue.poll();
                 if (cmd != null) {
+                    logger.info(cmd.getString());
                     try {
                         out.write(cmd.getString());
                         out.flush();

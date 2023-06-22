@@ -22,7 +22,10 @@ public class LevelController {
     public LevelController(Creator creator, int levelID, boolean isOnline) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         Vector2 basePosition = levelConfig.baseTileCoords;
-        LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
+
+        if (!isOnline)
+            LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
+
         pathfindingTimer = 0;
 
         waveGenerator = new WaveGenerator(levelConfig);
@@ -53,17 +56,18 @@ public class LevelController {
             else pathfindingTimer -= delta;
         }
         else {
-            for (int key : levelState.getBuildings().keySet()) {
-                predictActor(levelState.getBuildings().get(key), key, delta, false);
-            }
             for (int key : levelState.getEnemies().keySet()) {
-                predictActor(levelState.getEnemies().get(key), key, delta, true);
+                predictEnemy((Enemy) levelState.getEnemies().get(key), key, delta);
             }
         }
     }
 
-    private void predictActor(GameActor gameActor, int key, float delta, boolean b) {
-
+    private void predictEnemy(Enemy enemy, int key, float delta) {
+        Vector2 currentPosition = enemy.getPosition().cpy();
+        Vector2 previousPosition = enemy.getPreviousPosition().cpy();
+        Vector2 moveTarget = currentPosition.cpy().add(currentPosition.cpy().sub(previousPosition));
+        enemy.setMoveTarget(moveTarget);
+        enemy.move(delta);
     }
 
     private void updateActor(GameActor actor, int refID, float delta, boolean isEnemy) {

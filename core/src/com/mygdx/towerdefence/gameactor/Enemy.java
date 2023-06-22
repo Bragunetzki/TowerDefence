@@ -21,6 +21,7 @@ public class Enemy implements GameActor {
     private int refID;
     private GameActor target;
     private Vector2 moveTarget;
+    private Vector2 previousPosition;
 
     public Enemy(EnemyConfig config, Action action, Vector2 position) {
         this.id = config.id;
@@ -119,7 +120,7 @@ public class Enemy implements GameActor {
         this.target = target;
     }
 
-    private void move(float delta) {
+    public void move(float delta) {
         if (target != null) {
             if (target.getPosition().dst(position) <= action.getRange()) {//don't move if target is withing range.
                 return;
@@ -155,8 +156,18 @@ public class Enemy implements GameActor {
     }
 
     @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
     public void setPosition(float x, float y) {
+        previousPosition = position.cpy();
         this.position.x = x;
         this.position.y = y;
+    }
+
+    public Vector2 getPreviousPosition() {
+        return previousPosition;
     }
 }

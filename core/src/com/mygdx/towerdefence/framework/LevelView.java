@@ -47,6 +47,7 @@ public class LevelView extends Stage implements ViewHolder {
     private final Texture backgroundTexture;
     private final int levelID;
     private final Client client;
+    private boolean trackTimer;
 
     public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map, Client client) {
         super(screen.getViewport());
@@ -58,14 +59,15 @@ public class LevelView extends Stage implements ViewHolder {
         creator = game.getCreator();
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         tileList = new LinkedList<>();
-        currencyLabel = new Label("0", assets.getSkin());
+        currencyLabel = new Label("Currency: ", assets.getSkin());
         currencyLabel.setPosition(50, 30);
-        timerLabel = new Label("100", assets.getSkin());
+        timerLabel = new Label("Timer: ", assets.getSkin());
         timerLabel.setPosition(50, WORLD_SIZE_Y * 0.95f);
         addActor(currencyLabel);
         addActor(timerLabel);
         this.map = map;
         this.client = client;
+        trackTimer = true;
 
         backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
@@ -121,8 +123,18 @@ public class LevelView extends Stage implements ViewHolder {
     public void update(StateHolder state) {
         syncActors(enemies, state.getEnemies(), true);
         syncActors(buildings, state.getBuildings(), false);
-        currencyLabel.setText(state.getCurrency());
-        timerLabel.setText((int) state.getWaveGenerator().getWaveTimer());
+        currencyLabel.setText("Currency: "+ state.getCurrency());
+
+        if (trackTimer)
+            setTimerLabel(state.getWaveGenerator().getWaveTimer());
+    }
+
+    public void setTimerLabel(float time) {
+        timerLabel.setText("Timer: " + (int) time);
+    }
+
+    public void setTrackTimer(boolean value) {
+        this.trackTimer = value;
     }
 
     @Override
