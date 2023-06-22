@@ -1,5 +1,8 @@
 package com.mygdx.towerdefence.events;
 
+import com.mygdx.towerdefence.events.eventClasses.StateEvent;
+import com.mygdx.towerdefence.events.eventClasses.StateHolder;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;

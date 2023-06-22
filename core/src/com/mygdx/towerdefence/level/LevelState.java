@@ -2,7 +2,7 @@ package com.mygdx.towerdefence.level;
 
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
-import com.mygdx.towerdefence.events.StateHolder;
+import com.mygdx.towerdefence.events.eventClasses.StateHolder;
 import com.mygdx.towerdefence.gameactor.GameActor;
 
 import java.util.HashMap;

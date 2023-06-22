@@ -2,7 +2,7 @@ package com.mygdx.towerdefence.sprite;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.towerdefence.events.DamageActorEvent;
+import com.mygdx.towerdefence.events.eventClasses.DamageActorEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class Projectile extends GameSprite {

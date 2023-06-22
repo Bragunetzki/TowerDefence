@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 public class AlterCurrencyEvent implements StateEvent {
     private final int value;

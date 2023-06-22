@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.towerdefence.events.LevelEndEvent;
+import com.mygdx.towerdefence.events.eventClasses.LevelEndEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class EndGameCommand implements ServerCommand {

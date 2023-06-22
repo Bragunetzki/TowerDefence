@@ -2,8 +2,8 @@ package com.mygdx.towerdefence.level;
 
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.config.config_classes.WaveConfig;
-import com.mygdx.towerdefence.events.LastEnemySpawnEvent;
-import com.mygdx.towerdefence.events.SpawnEnemyEvent;
+import com.mygdx.towerdefence.events.eventClasses.LastEnemySpawnEvent;
+import com.mygdx.towerdefence.events.eventClasses.SpawnEnemyEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.util.LinkedList;

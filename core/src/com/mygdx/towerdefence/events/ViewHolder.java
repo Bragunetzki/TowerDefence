@@ -1,5 +1,6 @@
 package com.mygdx.towerdefence.events;
 
+import com.mygdx.towerdefence.events.eventClasses.StateHolder;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 
 public interface ViewHolder {

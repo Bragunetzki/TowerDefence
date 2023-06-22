@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 import com.mygdx.towerdefence.client.serverCommands.BuildingMessage;
 import com.mygdx.towerdefence.client.serverCommands.EnemyMessage;

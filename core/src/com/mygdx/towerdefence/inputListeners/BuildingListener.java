@@ -2,7 +2,7 @@ package com.mygdx.towerdefence.inputListeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.mygdx.towerdefence.events.BuildingTouchedEvent;
+import com.mygdx.towerdefence.events.eventClasses.BuildingTouchedEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class BuildingListener extends InputListener {

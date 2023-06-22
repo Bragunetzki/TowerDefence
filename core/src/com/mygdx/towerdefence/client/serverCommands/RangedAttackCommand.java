@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.towerdefence.events.RangedAttackEvent;
+import com.mygdx.towerdefence.events.eventClasses.RangedAttackEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class RangedAttackCommand implements ServerCommand {

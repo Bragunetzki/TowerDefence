@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.towerdefence.events.ActorDeathEvent;
+import com.mygdx.towerdefence.events.eventClasses.ActorDeathEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class ActorDeathCommand implements ServerCommand {

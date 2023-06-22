@@ -1,6 +1,8 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.mygdx.towerdefence.events.ViewEvent;
+import com.mygdx.towerdefence.events.ViewHolder;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 
 public class BuildingDestroyedViewEvent implements ViewEvent {

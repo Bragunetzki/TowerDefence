@@ -1,4 +1,7 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
+
+import com.mygdx.towerdefence.events.ViewEvent;
+import com.mygdx.towerdefence.events.ViewHolder;
 
 public class RangedAttackEvent implements ViewEvent {
     private final int damage;

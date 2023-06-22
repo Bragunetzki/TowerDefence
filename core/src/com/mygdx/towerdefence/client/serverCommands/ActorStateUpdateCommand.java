@@ -1,8 +1,8 @@
 package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.towerdefence.events.ActorStateUpdateEvent;
-import com.mygdx.towerdefence.events.SetTimerEvent;
+import com.mygdx.towerdefence.events.eventClasses.ActorStateUpdateEvent;
+import com.mygdx.towerdefence.events.eventClasses.SetTimerEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.towerdefence.gameactor.Enemy;

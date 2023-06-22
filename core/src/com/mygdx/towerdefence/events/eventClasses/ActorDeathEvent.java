@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.towerdefence.config.config_classes.EnemyConfig;

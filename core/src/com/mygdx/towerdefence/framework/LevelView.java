@@ -15,7 +15,7 @@ import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.BuildingUpgradeConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
 import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
-import com.mygdx.towerdefence.events.StateHolder;
+import com.mygdx.towerdefence.events.eventClasses.StateHolder;
 import com.mygdx.towerdefence.events.ViewHolder;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;

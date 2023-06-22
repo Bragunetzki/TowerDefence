@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.gameactor.action;
 
-import com.mygdx.towerdefence.events.DamageActorEvent;
-import com.mygdx.towerdefence.events.RangedAttackEvent;
+import com.mygdx.towerdefence.events.eventClasses.DamageActorEvent;
+import com.mygdx.towerdefence.events.eventClasses.RangedAttackEvent;
 import com.mygdx.towerdefence.framework.LevelView;
 import com.mygdx.towerdefence.gameactor.ActorType;
 import com.mygdx.towerdefence.gameactor.GameActor;

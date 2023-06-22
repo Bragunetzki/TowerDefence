@@ -1,7 +1,7 @@
 package com.mygdx.towerdefence.client.serverCommands;
 
 import com.badlogic.gdx.utils.JsonValue;
-import com.mygdx.towerdefence.events.DamageActorEvent;
+import com.mygdx.towerdefence.events.eventClasses.DamageActorEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 public class DamageActorCommand implements ServerCommand {

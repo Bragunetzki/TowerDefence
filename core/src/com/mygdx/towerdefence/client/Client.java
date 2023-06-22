@@ -12,10 +12,10 @@ import com.mygdx.towerdefence.client.clientCommands.ConstructBuildingClientComma
 import com.mygdx.towerdefence.client.clientCommands.DemolishBuildingClientCommand;
 import com.mygdx.towerdefence.client.clientCommands.UpgradeBuildingClientCommand;
 import com.mygdx.towerdefence.client.serverCommands.*;
-import com.mygdx.towerdefence.events.ActorDeathEvent;
-import com.mygdx.towerdefence.events.AlterCurrencyEvent;
-import com.mygdx.towerdefence.events.ConstructBuildingEvent;
-import com.mygdx.towerdefence.events.UpgradeBuildingEvent;
+import com.mygdx.towerdefence.events.eventClasses.ActorDeathEvent;
+import com.mygdx.towerdefence.events.eventClasses.AlterCurrencyEvent;
+import com.mygdx.towerdefence.events.eventClasses.ConstructBuildingEvent;
+import com.mygdx.towerdefence.events.eventClasses.UpgradeBuildingEvent;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.io.BufferedReader;

@@ -1,4 +1,4 @@
-package com.mygdx.towerdefence.events;
+package com.mygdx.towerdefence.events.eventClasses;
 
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.gameactor.GameActor;
