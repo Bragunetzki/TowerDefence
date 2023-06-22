@@ -18,8 +18,7 @@ public class LevelScreen extends BasicScreen {
         this.client = new Client("10.244.176.152", 5555);
         if (isOnline) {
             client.start();
-        }
-        else {
+        } else {
             client.setPlayerNum(1);
         }
 
@@ -30,8 +29,8 @@ public class LevelScreen extends BasicScreen {
                 throw new RuntimeException(e);
             }
         }
-        controller = new LevelController(game.getCreator(), levelID, isOnline);
-        levelView = new LevelView(this, game, levelID, controller.getLevelState().getMap().mapArr, client);
+        controller = new LevelController(game.getCreator(), levelID, isOnline, false);
+        levelView = new LevelView(this, game, levelID, controller.getLevelState().getMap().mapArr, client, false);
         if (isOnline)
             levelView.setTrackTimer(false);
         eventQueue.subscribeState(controller.getLevelState());
@@ -43,7 +42,7 @@ public class LevelScreen extends BasicScreen {
     public void render(float delta) {
         controller.update(delta);
         levelView.update(controller.getLevelState());
-        eventQueue.update();
+        eventQueue.update(delta);
         super.render(delta);
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mygdx.towerdefence.TowerDefenceGame;
 import com.mygdx.towerdefence.framework.screens.BasicScreen;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
+import com.mygdx.towerdefence.framework.screens.ReplayScreen;
 import com.mygdx.towerdefence.menu.tech_tree.TechTreeMainScreen;
 
 public class MainMenuScreen extends BasicScreen {
@@ -17,6 +18,7 @@ public class MainMenuScreen extends BasicScreen {
     private Button singlePlayerButton;
     private Button multiPlayerButton;
     private Button techTreeButton;
+    private Button replayButton;
 
     public MainMenuScreen(TowerDefenceGame game) {
         super(game);
@@ -29,6 +31,7 @@ public class MainMenuScreen extends BasicScreen {
         addSinglePlayerButton();
         addMultiPlayerButton();
         addTechTreeButton();
+        addReplayButton();
         getStageMultiplexer().addStage(stage);
     }
 
@@ -44,6 +47,10 @@ public class MainMenuScreen extends BasicScreen {
 
         if (techTreeButton.isPressed()) {
             game.setScreen(new TechTreeMainScreen(game));
+        }
+
+        if (replayButton.isPressed()) {
+            game.setScreen(new ReplayScreen(game));
         }
 
         super.render(delta);
@@ -75,5 +82,13 @@ public class MainMenuScreen extends BasicScreen {
         techTreeButton = new TextButton("Technology Tree", game.getAssetLoader().getSkin());
         techTreeButton.addListener(new InputListener());
         table.add(techTreeButton).pad(20);
+        table.row();
+    }
+
+    private void addReplayButton() {
+        replayButton = new TextButton("Replay", game.getAssetLoader().getSkin());
+        replayButton.addListener(new InputListener());
+        table.add(replayButton).pad(20);
+        table.row();
     }
 }

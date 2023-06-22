@@ -20,7 +20,7 @@ public class LevelController {
     private final boolean isOnline;
     private final int reward;
 
-    public LevelController(Creator creator, int levelID, boolean isOnline) {
+    public LevelController(Creator creator, int levelID, boolean isOnline, boolean isReplay) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         reward = levelConfig.reward;
         Vector2 basePosition = levelConfig.baseTileCoords;
@@ -31,8 +31,8 @@ public class LevelController {
         pathfindingTimer = 0;
 
         waveGenerator = new WaveGenerator(levelConfig);
-        if (!isOnline) {
-            waveGenerator.start();
+        if (!isReplay && !isOnline) {
+                waveGenerator.start();
         }
         levelState = new LevelState(creator, levelConfig, waveGenerator);
         isActive = true;

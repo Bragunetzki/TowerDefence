@@ -51,8 +51,9 @@ public class LevelView extends Stage implements ViewHolder {
     private final int levelID;
     private final Client client;
     private boolean trackTimer;
+    private final boolean isReplay;
 
-    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map, Client client) {
+    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map, Client client, boolean isReplay) {
         super(screen.getViewport());
         this.levelID = levelID;
         enemies = new HashMap<>();
@@ -70,6 +71,7 @@ public class LevelView extends Stage implements ViewHolder {
         addActor(timerLabel);
         this.map = map;
         this.client = client;
+        this.isReplay = isReplay;
         trackTimer = true;
 
         Texture backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
@@ -150,10 +152,11 @@ public class LevelView extends Stage implements ViewHolder {
             @Override
             protected void result(Object object) {
                 client.shutDown();
-                game.getGameState().alterInGameCurrency(reward);
-                LevelScreen.eventQueue.clearAll();
+                if (!isReplay)
+                    game.getGameState().alterInGameCurrency(reward);
+                LevelScreen.eventQueue.dispose(levelID, !isReplay);
                 game.getScreen().dispose();
-                if (victory && !client.isOnline()) {
+                if (victory && !client.isOnline() && !isReplay) {
                     game.getGameState().setLevelsPassed(levelID + 1);
                 }
 
@@ -174,7 +177,8 @@ public class LevelView extends Stage implements ViewHolder {
         } else {
             dialog.text("You Lost!");
             dialog.button("Ok", true);
-            dialog.button("Try again", false);
+            if (!isReplay)
+                dialog.button("Try again", false);
         }
         dialog.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
