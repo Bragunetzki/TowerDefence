@@ -24,8 +24,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Client {
     public static final Logger logger = new Logger("Client", Logger.INFO);
@@ -42,6 +44,7 @@ public class Client {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Thread readingThread, writingThread;
     private boolean isOnline = false;
+    private final AtomicInteger playerNum = new AtomicInteger(-1);
 
     public Client(String addr, int port) {
         this.addr = addr;
@@ -79,6 +82,14 @@ public class Client {
 
     public boolean isOnline() {
         return isOnline;
+    }
+
+    public int getPlayerNum() {
+        return playerNum.get();
+    }
+
+    public void setPlayerNum(int playerNum) {
+        this.playerNum.set(playerNum);
     }
 
     public void shutDown() {
@@ -155,7 +166,11 @@ public class Client {
                     if (commandMap.containsKey(commandName)) {
                         commandMap.get(commandName).execute(msg);
                     } else {
-                        logger.info("no command with name \"" + commandName + "\" found.");
+                        if (!Objects.equals(commandName, "login"))
+                            logger.info("no command with name \"" + commandName + "\" found.");
+                        else {
+                            playerNum.set(msg.getInt("id"));
+                        }
                     }
                 } else {
                     logger.info("No command could be read from server message.");

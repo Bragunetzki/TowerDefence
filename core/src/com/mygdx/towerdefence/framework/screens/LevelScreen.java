@@ -11,14 +11,21 @@ public class LevelScreen extends BasicScreen {
     private final LevelView levelView;
 
     public static final EventQueue eventQueue = new EventQueue();
+    Client client;
 
     public LevelScreen(TowerDefenceGame game, int levelID, boolean isOnline) {
         super(game);
-        Client client = new Client("10.244.176.152", 5555);
+        this.client = new Client("10.244.176.152", 5555);
         if (isOnline) {
             client.start();
         }
+        else {
+            client.setPlayerNum(0);
+        }
 
+        while (client.getPlayerNum() == -1) {
+
+        }
         controller = new LevelController(game.getCreator(), levelID, isOnline);
         levelView = new LevelView(this, game, levelID, controller.getLevelState().getMap().mapArr, client);
         if (isOnline)

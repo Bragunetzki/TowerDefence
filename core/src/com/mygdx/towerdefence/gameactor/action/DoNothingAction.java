@@ -2,10 +2,12 @@ package com.mygdx.towerdefence.gameactor.action;
 
 import com.mygdx.towerdefence.gameactor.GameActor;
 
+import java.util.Map;
+
 public class DoNothingAction implements Action {
     private float rate;
     private final float range;
-    public DoNothingAction(float rate, float range) {
+    public DoNothingAction(float rate, float range, Map<String, Float> params) {
         this.rate = rate;
         this.range = range;
     }

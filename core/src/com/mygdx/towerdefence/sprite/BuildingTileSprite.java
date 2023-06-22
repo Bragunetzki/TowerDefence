@@ -13,13 +13,18 @@ public class BuildingTileSprite extends GameSprite implements Hoverable {
     private final int tileY;
     private boolean hoverable;
 
-    public BuildingTileSprite(TextureRegion texture, int tileX, int tileY, float width, float height) {
+    private final boolean isClaimed;
+
+    public BuildingTileSprite(TextureRegion texture, int tileX, int tileY, float width, float height, boolean isClaimed) {
         super(texture, TilE_SIZE * tileX, TilE_SIZE * tileY, width, height);
-        addListener(new HoverableListener(this));
-        addListener(new TileListener(this));
+        this.isClaimed = isClaimed;
+        if (!isClaimed) {
+            addListener(new HoverableListener(this));
+            addListener(new TileListener(this));
+        }
         this.tileX = tileX;
         this.tileY = tileY;
-        hoverable = true;
+        hoverable = !isClaimed;
     }
 
     @Override
@@ -48,5 +53,9 @@ public class BuildingTileSprite extends GameSprite implements Hoverable {
 
     public int getTileY() {
         return tileY;
+    }
+
+    public boolean isClaimed() {
+        return isClaimed;
     }
 }

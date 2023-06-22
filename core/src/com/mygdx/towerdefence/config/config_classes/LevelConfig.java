@@ -10,6 +10,7 @@ public class LevelConfig {
     public String backgroundTextureName;
     public String plotTextureName;
     public String roadTextureName;
+    public String claimedPlotTextureName;
     public List<WaveConfig> waves;
     public int startingCurrency;
     public int mapID;

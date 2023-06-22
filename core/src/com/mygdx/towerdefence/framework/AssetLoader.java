@@ -27,6 +27,7 @@ public class AssetLoader {
         assets.load("background.png", Texture.class);
         assets.load("road.png", Texture.class);
         assets.load("plot.png", Texture.class);
+        assets.load("claimedPlot.png", Texture.class);
         assets.load("sprites/projectile.png", Texture.class);
         assets.load("line.png", Texture.class);
     }
