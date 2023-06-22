@@ -24,7 +24,11 @@ public class LevelScreen extends BasicScreen {
         }
 
         while (client.getPlayerNum() == -1) {
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         controller = new LevelController(game.getCreator(), levelID, isOnline);
         levelView = new LevelView(this, game, levelID, controller.getLevelState().getMap().mapArr, client);
