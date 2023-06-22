@@ -17,34 +17,53 @@ public class LevelController {
     private final WaveGenerator waveGenerator;
     private float pathfindingTimer;
     private boolean isActive;
+    private final boolean isOnline;
 
-    public LevelController(Creator creator, int levelID) {
+    public LevelController(Creator creator, int levelID, boolean isOnline) {
         LevelConfig levelConfig = creator.getLevelConfig(levelID);
         Vector2 basePosition = levelConfig.baseTileCoords;
         LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent(0, (int) basePosition.x, (int) basePosition.y, 0));
         pathfindingTimer = 0;
+
         waveGenerator = new WaveGenerator(levelConfig);
-        waveGenerator.start();
+        if (!isOnline) {
+            waveGenerator.start();
+        }
         levelState = new LevelState(creator, levelConfig, waveGenerator);
         isActive = true;
+        this.isOnline = isOnline;
     }
 
     public void update(float delta) {
-        if (!isActive) return;
-        if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
-            LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, 200));
-            isActive = false;
-        }
-        waveGenerator.update(delta);
+        if (!isOnline) {
+            if (!isActive) return;
+            if (levelState.isLastEnemySpawned() && levelState.getEnemies().size() == 0) {
+                LevelScreen.eventQueue.addStateEvent(new LevelEndEvent(true, 200));
+                isActive = false;
+            }
+            waveGenerator.update(delta);
 
-        for (int key : levelState.getBuildings().keySet()) {
-            updateActor(levelState.getBuildings().get(key), key, delta, false);
+            for (int key : levelState.getBuildings().keySet()) {
+                updateActor(levelState.getBuildings().get(key), key, delta, false);
+            }
+            for (int key : levelState.getEnemies().keySet()) {
+                updateActor(levelState.getEnemies().get(key), key, delta, true);
+            }
+            if (pathfindingTimer <= 0 && PATHFINDING_UPDATE_RATE != 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
+            else pathfindingTimer -= delta;
         }
-        for (int key : levelState.getEnemies().keySet()) {
-            updateActor(levelState.getEnemies().get(key), key, delta, true);
+        else {
+            for (int key : levelState.getBuildings().keySet()) {
+                predictActor(levelState.getBuildings().get(key), key, delta, false);
+            }
+            for (int key : levelState.getEnemies().keySet()) {
+                predictActor(levelState.getEnemies().get(key), key, delta, true);
+            }
         }
-        if (pathfindingTimer <= 0 && PATHFINDING_UPDATE_RATE != 0) pathfindingTimer = PATHFINDING_UPDATE_RATE;
-        else pathfindingTimer -= delta;
+    }
+
+    private void predictActor(GameActor gameActor, int key, float delta, boolean b) {
+
     }
 
     private void updateActor(GameActor actor, int refID, float delta, boolean isEnemy) {

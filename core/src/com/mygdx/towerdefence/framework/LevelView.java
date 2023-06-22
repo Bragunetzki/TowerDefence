@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.towerdefence.TowerDefenceGame;
+import com.mygdx.towerdefence.client.Client;
 import com.mygdx.towerdefence.config.Creator;
 import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.LevelConfig;
@@ -45,8 +46,9 @@ public class LevelView extends Stage implements ViewHolder {
     private final TowerDefenceGame game;
     private final Texture backgroundTexture;
     private final int levelID;
+    private final Client client;
 
-    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map) {
+    public LevelView(BasicScreen screen, TowerDefenceGame game, int levelID, Tile[][] map, Client client) {
         super(screen.getViewport());
         this.levelID = levelID;
         enemies = new HashMap<>();
@@ -63,6 +65,7 @@ public class LevelView extends Stage implements ViewHolder {
         addActor(currencyLabel);
         addActor(timerLabel);
         this.map = map;
+        this.client = client;
 
         backgroundTexture = assets.getTexture(levelConfig.backgroundTextureName);
         Texture plotTexture = assets.getTexture(levelConfig.plotTextureName);
@@ -128,7 +131,7 @@ public class LevelView extends Stage implements ViewHolder {
         final Dialog dialog = new Dialog("BuildingSelection", assets.getSkin()) {
             @Override
             protected void result(Object object) {
-                LevelScreen.eventQueue.addStateEvent(new ConstructBuildingEvent((Integer) object, tileX, tileY));
+                client.constructBuilding((Integer) object, tileX, tileY);
                 this.hide(null);
             }
         };
@@ -185,8 +188,7 @@ public class LevelView extends Stage implements ViewHolder {
             protected void result(Object object) {
                 if ((Integer) object == 0) {
                     int demolitionReturn = creator.getBuildingConfig(ID).demolitionCurrency;
-                    LevelScreen.eventQueue.addStateEvent(new ActorDeathEvent(refID, false));
-                    LevelScreen.eventQueue.addStateEvent(new AlterCurrencyEvent(demolitionReturn));
+                    client.demolishBuilding(refID, demolitionReturn);
                 }
                 this.hide(null);
             }
