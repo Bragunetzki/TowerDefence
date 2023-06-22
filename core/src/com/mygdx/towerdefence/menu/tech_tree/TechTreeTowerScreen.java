@@ -90,11 +90,11 @@ public class TechTreeTowerScreen extends BasicScreen {
 
         if (towerId != -1) {
             Image buildingSprite = new Image(game.getAssetLoader().getBuildingTexture(game.getCreator().getBuildingConfig(towerId).spriteName));
-            buildingSprite.setScale(towerButton.getHeight() / buildingSprite.getHeight());
+//            buildingSprite.setScale(towerButton.getHeight() / buildingSprite.getHeight());
 //            buildingSprite.setPosition(60, stage.getHeight() / 2 - towerButton.getHeight() / 2);
-            table.add(buildingSprite);
+            table.add(buildingSprite).size(towerButton.getHeight()).pad(10);
         }
-        table.add(towerButton).padRight(25);
+        table.add(towerButton);
 
         List<TechTreeNodeConfig> currentColumn = new ArrayList<>();
         for (TechTreeNodeConfig node : towerUpgradeNodes) {

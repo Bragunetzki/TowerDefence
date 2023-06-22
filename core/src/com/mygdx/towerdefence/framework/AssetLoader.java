@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import java.io.File;
+
 public class AssetLoader {
     private final AssetManager assets;
     private final BitmapFont font;
@@ -19,17 +21,22 @@ public class AssetLoader {
     }
 
     public void loadAll() {
-        assets.load("sprites/enemies/boar.png", Texture.class);
-        assets.load("sprites/enemies/boarRanger.png", Texture.class);
-        assets.load("sprites/buildings/tower.png", Texture.class);
-        assets.load("sprites/buildings/base.png", Texture.class);
-        assets.load("sprites/buildings/mine.png", Texture.class);
-        assets.load("background.png", Texture.class);
-        assets.load("road.png", Texture.class);
-        assets.load("plot.png", Texture.class);
-        assets.load("claimedPlot.png", Texture.class);
-        assets.load("sprites/projectile.png", Texture.class);
-        assets.load("line.png", Texture.class);
+        loadDir("assets");
+    }
+
+    private void loadDir(String pathname) {
+        File[] files = (new File(pathname)).listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (file.getName().equals("configs") || file.getName().equals("styles")) continue;
+                loadDir(file.getPath());
+            } else {
+                String path = file.getPath();
+                String fileName = path.substring(7).replace("\\", "/");
+                assets.load(fileName, Texture.class);
+            }
+        }
+
     }
 
     public BitmapFont getFont() {
