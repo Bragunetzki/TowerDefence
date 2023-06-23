@@ -85,11 +85,11 @@
     },
     "upgrades": [
       {
-        "cost": 40,
+        "cost": 30,
         "upgrades": [
           {
             "upgradedParameter": "duration",
-            "modifier": 1.2
+            "modifier": 2
           }
         ]
       }

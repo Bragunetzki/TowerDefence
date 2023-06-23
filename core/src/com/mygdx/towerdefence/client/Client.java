@@ -12,10 +12,7 @@ import com.mygdx.towerdefence.client.clientCommands.ConstructBuildingClientComma
 import com.mygdx.towerdefence.client.clientCommands.DemolishBuildingClientCommand;
 import com.mygdx.towerdefence.client.clientCommands.UpgradeBuildingClientCommand;
 import com.mygdx.towerdefence.client.serverCommands.*;
-import com.mygdx.towerdefence.events.eventClasses.ActorDeathEvent;
-import com.mygdx.towerdefence.events.eventClasses.AlterCurrencyEvent;
-import com.mygdx.towerdefence.events.eventClasses.ConstructBuildingEvent;
-import com.mygdx.towerdefence.events.eventClasses.UpgradeBuildingEvent;
+import com.mygdx.towerdefence.events.eventClasses.*;
 import com.mygdx.towerdefence.framework.screens.LevelScreen;
 
 import java.io.BufferedReader;
@@ -61,6 +58,8 @@ public class Client {
         commandMap.put("moneyChanged", new MoneyChangedCommand());
         commandMap.put("endGame", new EndGameCommand());
         commandMap.put("upgradeBuilding", new UpgradeBuildingServerCommand());
+        commandMap.put("freeze", new FreezeCommand());
+        commandMap.put("freezeActor", new FreezeActorCommand());
 
         commandQueue = new LinkedBlockingQueue<>();
         jsonReader = new JsonReader();
