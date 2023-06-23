@@ -27,6 +27,7 @@ import com.mygdx.towerdefence.menu.LevelSelectionScreen;
 import com.mygdx.towerdefence.menu.MainMenuScreen;
 import com.mygdx.towerdefence.sprite.BuildingTileSprite;
 import com.mygdx.towerdefence.sprite.GameActorView;
+import com.mygdx.towerdefence.sprite.Ice;
 import com.mygdx.towerdefence.sprite.Projectile;
 
 import java.util.*;
@@ -270,6 +271,12 @@ public class LevelView extends Stage implements ViewHolder {
 
         TextureRegion texture = new TextureRegion(assets.getTexture("sprites/projectile.png"));
         addActor(new Projectile(texture, x, y, TilE_SIZE / 5, TilE_SIZE / 5, damage, target, targetRefID, targetsEnemy));
+    }
+
+    @Override
+    public void addIce(float duration, float x, float y) {
+        TextureRegion texture = new TextureRegion(assets.getTexture("sprites/ice.png"));
+        addActor(new Ice(texture, x, y, TilE_SIZE, TilE_SIZE, duration));
     }
 
 

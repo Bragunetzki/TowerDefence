@@ -91,6 +91,7 @@ public class Creator {
         actionClasses.put(ActionType.DoNothing, DoNothingAction.class);
         actionClasses.put(ActionType.BasicAttack, BasicAttackAction.class);
         actionClasses.put(ActionType.GenerateCurrency, GenerateCurrencyAction.class);
+        actionClasses.put(ActionType.Freeze, FreezeAction.class);
     }
 
     private void initBuildings() {

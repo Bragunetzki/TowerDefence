@@ -6,6 +6,7 @@ import com.mygdx.towerdefence.config.config_classes.BuildingConfig;
 import com.mygdx.towerdefence.config.config_classes.BuildingUpgradeConfig;
 import com.mygdx.towerdefence.config.config_classes.UpgradeConfig;
 import com.mygdx.towerdefence.gameactor.action.Action;
+import com.mygdx.towerdefence.gameactor.action.FreezeAction;
 import com.mygdx.towerdefence.gameactor.action.GenerateCurrencyAction;
 import com.mygdx.towerdefence.gameactor.priority.Priority;
 
@@ -63,6 +64,10 @@ public class Building implements GameActor, Pool.Poolable {
         health -= damage;
         if (health < 0) health = 0;
         return health;
+    }
+
+    @Override
+    public void becomeFrozen(float duration) {
     }
 
     @Override
@@ -194,6 +199,10 @@ public class Building implements GameActor, Pool.Poolable {
                 case "value":
                     GenerateCurrencyAction gAction = (GenerateCurrencyAction) action;
                     (gAction).setValue((int) (gAction.getValue() * u.modifier));
+                    break;
+                case "duration":
+                    FreezeAction fAction = (FreezeAction) action;
+                    (fAction).setDuration((int) (fAction.getDuration() * u.modifier));
                     break;
             }
         }

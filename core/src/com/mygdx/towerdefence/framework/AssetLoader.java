@@ -27,10 +27,12 @@ public class AssetLoader {
         assets.load("sprites/buildings/base.png", Texture.class);
         assets.load("sprites/enemies/boarGod.png", Texture.class);
         assets.load("sprites/buildings/mine.png", Texture.class);
+        assets.load("sprites/buildings/ice_crystal.png", Texture.class);
         assets.load("background.png", Texture.class);
         assets.load("road.png", Texture.class);
         assets.load("plot.png", Texture.class);
         assets.load("sprites/projectile.png", Texture.class);
+        assets.load("sprites/ice.png", Texture.class);
         assets.load("line.png", Texture.class);
         assets.load("claimedPlot.png", Texture.class);
         //loadDir("assets");

@@ -10,7 +10,7 @@
     "waves": [
       {
         "waveDelay": 20,
-        "enemyCount": 5,
+        "enemyCount": 1,
         "enemyInterval": 4,
         "enemyTypes": [
           0,
